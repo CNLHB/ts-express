@@ -1,9 +1,9 @@
 import express from 'express'
 import bodyParser from 'body-parser';
 import cookieSession from  'cookie-session';
-// import router from  './src/app/controller/router';
 import {router} from  './src/utils/decorator';
 import  './src/app/controller/index';
+import  './src/config/config';
 
 const app = express()
 

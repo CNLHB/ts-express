@@ -10,11 +10,13 @@ interface BodyRequest extends Request {
 class UserController{
     @get("/getActive")
     public getActive(req: BodyRequest, res: Response){
-        res.json(getResponseData({name:"没有内容"}))
+        res.json(getResponseData({name:"没有内容1sss"}))
     }
     @get("/")
-    public index(req: BodyRequest, res: Response){
+    public getHome(req: BodyRequest, res: Response){
         const isLogin = req.session ? req.session.login : false;
+        console.log(8888);
+        
         if (isLogin) {
           res.send(`
             <html>
@@ -38,7 +40,7 @@ class UserController{
           `);
         }
     }
-    @post("login")
+    @post("/login")
     public login(req: BodyRequest, res: Response){
         const { password } = req.body;
         const isLogin = req.session ? req.session.login : false;

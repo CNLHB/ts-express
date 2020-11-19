@@ -31,8 +31,9 @@ export function use(middleware: RequestHandler) {
 
 function getRequestDecorator(type: string) {
   return function(path: string) {
+    const newPath = path.startsWith("/")?path: `/${path}`
     return function(target: any, key: string) {
-      Reflect.defineMetadata('path', path, target, key);
+      Reflect.defineMetadata('path', newPath, target, key);
       Reflect.defineMetadata('method', type, target, key);
     };
   };

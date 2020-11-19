@@ -1,22 +1,27 @@
+ 
+export const enum ResultCode{
+  SUCESS_CODE = 0
+
+}
+
 interface Result {
-    sucesss: boolean;
     code:number;
-    errMsg?: string;
+    msg: string;
     data: any;
-  }
+}
+
   
-  export const getResponseData = (data: any, errMsg?: string,code:number=0): Result => {
-    if (errMsg) {
+  export const getResponseData = (data: any, msg: string="sucess",code:number=ResultCode.SUCESS_CODE): Result => {
+    if (msg) {
       return {
-        sucesss: false,
         code,
-        errMsg,
+        msg,
         data
       };
     }
     return {
-      sucesss: true,
       code,
+      msg,
       data
     };
   };
