@@ -1,6 +1,7 @@
  
 export const enum ResultCode{
-  SUCESS_CODE = 0
+  SUCESS_CODE = 0,
+  ERROR_CODE = 10001
 
 }
 

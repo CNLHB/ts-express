@@ -1,21 +1,27 @@
 import { controller, get, post } from "../../utils/decorator";
 import { Request, Response, NextFunction } from 'express';
 import {getResponseData} from '../../utils/utils'
-
+import Users from '../models/Users'
 interface BodyRequest extends Request {
     body: { [key: string]: string | undefined };
 }
 
 @controller
-class UserController{
+ class UserController{
     @get("/getActive")
-    public getActive(req: BodyRequest, res: Response){
-        res.json(getResponseData({name:"没有内容1sss"}))
+    public async getActive(req: BodyRequest, res: Response){
+    //   await Users.create<Users>({
+    //   name: 'Niko',
+    //   email:'1348844909@qq.com',
+    //   account: 'liaohuabiao',
+    //   password: "19",
+    // })
+      const userList = await Users.getList<Users>()
+        res.json(getResponseData(userList))
     }
     @get("/")
     public getHome(req: BodyRequest, res: Response){
         const isLogin = req.session ? req.session.login : false;
-        console.log(8888);
         
         if (isLogin) {
           res.send(`
@@ -63,3 +69,4 @@ class UserController{
           res.redirect('/');
     }
 }
+//

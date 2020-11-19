@@ -1,11 +1,12 @@
-
+// import Sequelizen{Sequelize} from 'sequelize'
 let sequelize; 
+console.log(__dirname);
+
 (async () => {
     const Sequelize = require("sequelize");
     // 建立连接
-    
     sequelize = new Sequelize("second_stage", "root", "123456", {
-        host: "localhost",
+        host: "47.101.196.193",
         dialect: "mysql", //定义数据库类型
         operatorsAliases: false
     });
