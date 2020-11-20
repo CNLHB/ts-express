@@ -7,7 +7,7 @@ import router from  './src/utils/decorator';
 
 
 const app = express()
-
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
     cookieSession({

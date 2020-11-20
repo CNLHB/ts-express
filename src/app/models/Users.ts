@@ -1,14 +1,14 @@
-import { Table, Column, Model,CreatedAt,UpdatedAt,DeletedAt } from "sequelize-typescript";
-interface IUser{
-  name: string;
-  email: string;
-  account: string;
-  password: string;
-}
+import {
+  Table,
+  Column,
+  Model,
+  HasMany,
+  HasOne
+} from "sequelize-typescript";
+import UserInfo from './UserInfo';
 
 @Table({
-  tableName: "users",
-  timestamps: true
+  tableName: "users"
 })
 export default class Users extends Model<Users> {
   @Column({
@@ -17,9 +17,12 @@ export default class Users extends Model<Users> {
   })
   id: number;
 
+  @Column({field:"user_name"})
+  userName: string;
   @Column
-  name: string;
-
+  phone: string;
+  @Column
+  images: string;
   @Column
   email: string;
   @Column
@@ -27,10 +30,17 @@ export default class Users extends Model<Users> {
   @Column
   password: string;
 
+  @HasOne(() => UserInfo,"userId")
+  userInfo: UserInfo;
+  isActive:number
   static async getList<T extends Users>() {
     const results = await this.findAll({
       raw: true,
+      attributes:{
+        exclude:["password","deleted_at"]
+      }
     });
     return results as T[];
   }
 }
+// attributes: { exclude: ['baz'] },

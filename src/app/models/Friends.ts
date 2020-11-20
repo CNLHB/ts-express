@@ -1,9 +1,6 @@
 import { Table, Column, Model } from "sequelize-typescript";
-
-
 @Table({
   tableName: "friends",
-  timestamps: true
 })
 export default class Friends extends Model<Friends> {
   @Column({
@@ -12,10 +9,11 @@ export default class Friends extends Model<Friends> {
   })
   id: number;
 
-  @Column
+  @Column({ field: "from_id" })
   fromId: number;
 
-  @Column
+  @Column({ field: "to_id" })
   toId: number;
+
 
 }

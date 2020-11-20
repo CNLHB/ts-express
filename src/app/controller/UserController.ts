@@ -1,19 +1,23 @@
 import { controller, get, post } from "../../utils/decorator";
-import { Request, Response, NextFunction } from "express";
-import { getResponseData } from "../../utils/utils";
+import { Request, Response } from "express";
+import {getResponseData, ResultCode} from "../../utils/utils";
 import Users from "../models/Users";
+import UserInfo from './../models/UserInfo';
+import UserService from "../service/UserSerive";
 interface BodyRequest extends Request {
   body: { [key: string]: string | undefined };
 }
 
 @controller
 export default class UserController {
-  @get("/getActive")
-  async getActive(req: BodyRequest, res: Response) {
+  @get("/user/:id")
+  async userInfo(req: BodyRequest, res: Response) {
     try {
-      const userList = await Users.getList<Users>();
-      res.json(getResponseData(userList));
+      const id =  parseInt(req.params.id)
+      const userInfo =await UserService.queryUserById(id);
+      res.json(getResponseData(userInfo));
     } catch (error) {
+      res.json(getResponseData("","request error",ResultCode.ERROR_CODE));
       console.log(error);
     }
   }
@@ -67,9 +71,6 @@ export default class UserController {
     res.redirect("/");
   }
 
-  getName() {
-    return "name";
-  }
 }
   
 //
