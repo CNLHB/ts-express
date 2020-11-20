@@ -1,18 +1,22 @@
 import { Router, RequestHandler } from 'express';
 import 'reflect-metadata';
-export const router = Router();
 
+const router = Router();
+let mapRouter = {}
 enum Method {
   get = 'get',
   post = 'post'
 }
 
+
 export function controller(target: any) {
-  for (let key in target.prototype) {
-    const path = Reflect.getMetadata('path', target.prototype, key);
-    const method: Method = Reflect.getMetadata('method', target.prototype, key);
-    const handler = target.prototype[key];
-    const middleware = Reflect.getMetadata('middleware', target.prototype, key);
+  // console.log(Object.getOwnPropertyNames(target.prototype));
+
+  for (let key in mapRouter) {
+    const path = Reflect.getMetadata('path', mapRouter, key);
+    const method: Method = Reflect.getMetadata('method', mapRouter, key);
+    const handler = mapRouter[key];
+    const middleware = Reflect.getMetadata('middleware', mapRouter, key);
     if (path && method && handler) {
       if (middleware) {
         router[method](path, middleware, handler);
@@ -30,11 +34,14 @@ export function use(middleware: RequestHandler) {
 }
 
 function getRequestDecorator(type: string) {
+ 
   return function(path: string) {
     const newPath = path.startsWith("/")?path: `/${path}`
-    return function(target: any, key: string) {
-      Reflect.defineMetadata('path', newPath, target, key);
-      Reflect.defineMetadata('method', type, target, key);
+    return function(target: any, key: string,descriptor:any) {
+      //descriptor.value
+      mapRouter[key] = descriptor.value
+      Reflect.defineMetadata('path', newPath, mapRouter, key);
+      Reflect.defineMetadata('method', type, mapRouter, key);
     };
   };
 }
@@ -43,3 +50,4 @@ export const get = getRequestDecorator('get');
 export const post = getRequestDecorator('post');
 export const put = getRequestDecorator('put');
 export const del = getRequestDecorator('delete');
+export default router

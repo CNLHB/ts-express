@@ -1,4 +1,10 @@
 import { Table, Column, Model,CreatedAt,UpdatedAt,DeletedAt } from "sequelize-typescript";
+interface IUser{
+  name: string;
+  email: string;
+  account: string;
+  password: string;
+}
 
 @Table({
   tableName: "users",

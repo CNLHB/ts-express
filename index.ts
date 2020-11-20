@@ -3,8 +3,7 @@ import bodyParser from 'body-parser';
 import cookieSession from  'cookie-session';
 import  './src/config/ts-sequelize';
 import  './src/app/controller/index';
-import {router} from  './src/utils/decorator';
-// import  './src/config/config';
+import router from  './src/utils/decorator';
 
 
 const app = express()
@@ -19,6 +18,6 @@ app.use(
   );
 app.use(router);
 
-app.listen(7001, () => {
+app.listen(520, () => {
   console.log('server is running');
 });

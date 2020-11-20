@@ -19,17 +19,26 @@ export const sequelize = new Sequelize(
 )
     // 'mysql://root:123456@147.101.196.193:3306/ts_test') 
 sequelize.addModels([path.resolve(__dirname, `../app/models/`)]);
-// import Users from '../app/models/Users'
-//  async function get(){
-//      try {
-//             const userList = await Users.getList<Users>()
-//             console.log(userList[0]);
-            
-//      } catch (error) {
-//          console.log(error);
-         
-//      }
 
-// }
-// get()
+import Users from '../app/models/Users'
+import Friends from '../app/models/Friends'
+ (async function(){
+     try {
+            await sequelize.sync()
+        //    await Users.create<Users>({
+        //     name: 'Niko',
+        //     email:'1348844909@qq.com',
+        //     account: 'liaohuabiao',
+        //     password: "19",
+        //   })
+        //   await Friends.create<Friends>({fromId:2,toId:1})
+            // const userList = await Users.getList<Users>()
+            // console.log(userList[0]);
+            
+     } catch (error) {
+         console.log(error);
+         
+     }
+
+})()
 

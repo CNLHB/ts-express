@@ -1,1 +1,1 @@
-import  './UserController';
+  require('./UserController');
