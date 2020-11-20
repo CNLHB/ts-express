@@ -1,8 +1,9 @@
 import Friends from "../models/Friends";
 import Users from "../models/Users";
-import Seqeuelize from "sequelize";
+import Sequelize from "sequelize";
+const Op = Sequelize.Op;
 import Message from "../models/Message";
-const Op = Seqeuelize.Op;
+
 export  default class MessageService{
     constructor() {
     }
@@ -13,7 +14,7 @@ export  default class MessageService{
             let messages = await Message.findAll({
                 where:{
                     belong: fromId,
-                    $or: [
+                    [Op.or]: [
                         { fromId: fromId, toId:toId },
                         { fromId: toId, toId:fromId }
                     ]

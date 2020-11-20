@@ -1,7 +1,7 @@
 import Friends from "../models/Friends";
 import Users from "../models/Users";
-import Seqeuelize from "sequelize";
-const Op = Seqeuelize.Op;
+import Sequelize from "sequelize";
+const Op = Sequelize.Op;
 export  default class FriendsService{
     constructor() {
     }

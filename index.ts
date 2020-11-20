@@ -1,9 +1,10 @@
 import express from 'express'
 import bodyParser from 'body-parser';
 import cookieSession from  'cookie-session';
+import router from  './src/utils/decorator';
 import  './src/config/ts-sequelize';
 import  './src/app/controller/index';
-import router from  './src/utils/decorator';
+
 
 
 const app = express()

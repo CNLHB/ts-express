@@ -1,5 +1,6 @@
-import Seqeuelize from "sequelize";
 import Chat from "../models/Chat";
+import Sequelize from "sequelize";
+const Op = Sequelize.Op;
 export  default class ChatService{
     constructor() {
     }
@@ -11,7 +12,7 @@ export  default class ChatService{
                 where:{
                     belong: fromId,
                     status: false,
-                    $or: [
+                    [Op.or]: [
                         { fromId: fromId, toId:toId },
                         { fromId: toId, toId:fromId }
                     ]
@@ -33,17 +34,17 @@ export  default class ChatService{
                 where:{
                     belong: fromId,
                     status: false,
-                    $or: [
+                    [Op.or]: [
                         { fromId: fromId, toId:toId },
                         { fromId: toId, toId:fromId }
                     ]
                 }
             })
-            let retToid: Chat = await Chat.findOne({
+            let retToId: Chat = await Chat.findOne({
                 where:{
                     belong: toId,
                     status: false,
-                    $or: [
+                    [Op.or]: [
                         { fromId: fromId, toId:toId },
                         { fromId: toId, toId:fromId }
                     ]
@@ -55,7 +56,7 @@ export  default class ChatService{
                     fromId,toId,belong:fromId,status:false
                 })
             }
-            if (retToid == null){
+            if (retToId == null){
                 await  Chat.create({
                     fromId,toId,belong: toId,status:false
                 })
@@ -73,7 +74,7 @@ export  default class ChatService{
             where:{
                 belong: uid,
                 status: false,
-                $or: [
+                [Op.or]: [
                     { fromId: uid },
                     { toId:uid }
                 ]

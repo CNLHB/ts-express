@@ -21,6 +21,7 @@
     "@types/cookie-session": "^2.0.41",
     "@types/express": "^4.17.9",
     "@types/reflect-metadata": "^0.1.0",
+    "@types/sequelize": "^4.28.9",
     "concurrently": "^5.3.0",
     "nodemon": "^2.0.6",
     "ts-node": "^9.0.0",

@@ -11,7 +11,7 @@ export default class UserService{
             },
             include:[{
                 model:UserInfo,
-                'where':{
+                where:{
                     id
                 },
                 attributes: {
