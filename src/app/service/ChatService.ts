@@ -61,13 +61,14 @@ export  default class ChatService{
                     fromId,toId,belong: toId,status:false
                 })
             }
-            return chatRet
+            return  ret || chatRet
 
         }catch (err) {
             console.log(err)
         return new Chat()
     }
 }
+
 
     static async queryChatListById(uid: number) {
         let chatList = await Chat.findAll({

@@ -1,7 +1,10 @@
  
 export const enum ResultCode{
   SUCESS_CODE = 0,
-  ERROR_CODE = 10001
+  BAD_REQUEST_CODE = 10000,
+  UNAUTHORIZED_CODE = 10001,
+  FORBIDDEN_CODE = 10003,
+  ERROR_CODE = 10004,
 
 }
 

@@ -1,26 +1,31 @@
-import Friends from "../models/Friends";
-import Users from "../models/Users";
 import Sequelize from "sequelize";
-const Op = Sequelize.Op;
+const Op: Sequelize.Operators = Sequelize.Op;
 import Message from "../models/Message";
-
-export  default class MessageService{
+import Chat from "../models/Chat";
+import Users from "../models/Users";
+import {IBaseIncludeOptions} from "sequelize-typescript/lib/interfaces/IBaseIncludeOptions";
+import {IFindOptions} from "sequelize-typescript";
+export  enum MESSAGE_TYPE  {
+    UN_READ_TYPE = 0,
+    ALL= 1
+}
+export default class MessageService {
     constructor() {
     }
+
     // 查看用户与另一个用户的聊天信息   belong = fromId
     static async getMessageByFromIdAndToId(fromId: number, toId: number): Promise<Message[]> {
-
         try {
             let messages = await Message.findAll({
-                where:{
+                where: {
                     belong: fromId,
                     [Op.or]: [
-                        { fromId: fromId, toId:toId },
-                        { fromId: toId, toId:fromId }
+                        {fromId: fromId, toId: toId},
+                        {fromId: toId, toId: fromId}
                     ]
                 },
                 attributes: {
-                    exclude:["deleted_at"]
+                    exclude: ["deleted_at"]
                 }
             })
             return messages
@@ -29,37 +34,87 @@ export  default class MessageService{
         }
         return [];
     }
-    static async getFansList(toId: number): Promise<Users[]> {
-        const results: Friends[] = await Friends.findAll({
-            where: {
-                toId,
-            },
-            raw: true,
-        });
-        const ids: number[] = results.map((item: Friends) => {
-            return item.fromId;
-        });
-        let users = await Users.findAll({
-            where: {
-                id: { [Op.in]: ids },
-            },
-            attributes: ["id", "userName", "image"],
-        });
-        for (let item of users) {
-            const ret: Friends = await Friends.findOne({
-                raw: true,
-                where: {
-                    fromId: toId,
-                    toId: item.id,
-                },
-            });
-            if(ret == null){
-                item.isActive = 1;
-                console.log(1111);
-            }else{
-                item.isActive = 2;
+    static async  readMessage(id:number):Promise<boolean>{
+        let [count] = await Message.update({status: true},{
+            where:{
+                id
+            }
+        })
+        if (count==0){
+            return false
+        }
+        return true
+    }
+
+    static async  getMessageListById(id:number,type: MESSAGE_TYPE):Promise<Chat[]>{
+        let chatList: Chat[];
+        let find;
+        if (type == MESSAGE_TYPE.ALL){
+            find = {}
+        }else if (type == MESSAGE_TYPE.UN_READ_TYPE){
+            find = {
+                status:  false
             }
         }
-        return users;
+        try {
+            chatList = await Chat.findAll({
+                attributes:{
+                    exclude:["deleted_at","status","created_at"]
+                },
+                where:{
+                    belong:id,
+                    status:false
+                },
+                include:[{
+                    model:Message,
+                    attributes: {
+                        exclude:["deleted_at","status","updated_at"]
+                    },
+                    where:find
+                },{
+                    model:Users,
+                    attributes: ["id","image","nickname"]
+                }
+                ],
+            })
+
+
+            return chatList
+        } catch (err) {
+            console.log(err);
+        }
+        return [];
+    }
+    static async sendMessageToUser(cId: number, fromId: number, toId: number, message: string) {
+
+
+        await Message.create({
+            fromId, toId, message, cId, belong: fromId, status: false
+        })
+        const chat: Chat = await Chat.findOne({
+            raw: true,
+            where: {
+                fromId: fromId, toId: toId, belong: toId
+            }
+        })
+        await Chat.update({
+            afterMessage: message
+        }, {
+            where: {
+                fromId, toId, belong: toId
+            }
+        })
+
+        await Message.create({
+            fromId: fromId, toId: toId, message, cId: chat.id, belong: toId, status: false
+        })
+        await Chat.update({
+            afterMessage: message
+        }, {
+            where: {
+                fromId, toId, belong: fromId
+            }
+        })
+
     }
 }

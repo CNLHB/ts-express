@@ -22,7 +22,6 @@ export default class UserController {
   @get("user/fans/:id")
   async getFansList(req: BodyRequest, res: Response) {
     const id: number = parseInt(req.params.id);
-
     try {
       const friends = await FriendsService.getFansList(id);
       res.json(getResponseData(friends));

@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize-typescript'
 import {operatorsAliases} from './config'
 import path from 'path'
-export const sequelize = new Sequelize(
+export const sequelize: Sequelize = new Sequelize(
     {
         host: "47.101.196.193",
         database: 'second_stage',

@@ -1,39 +1,4 @@
-{
-            $eq: Op.eq,
-            $ne: Op.ne,
-            $gte: Op.gte,
-            $gt: Op.gt,
-            $lte: Op.lte,
-            $lt: Op.lt,
-            $not: Op.not,
-            $in: Op.in,
-            $notIn: Op.notIn,
-            $is: Op.is,
-            $like: Op.like,
-            $notLike: Op.notLike,
-            $iLike: Op.iLike,
-            $notILike: Op.notILike,
-            $regexp: Op.regexp,
-            $notRegexp: Op.notRegexp,
-            $iRegexp: Op.iRegexp,
-            $notIRegexp: Op.notIRegexp,
-            $between: Op.between,
-            $notBetween: Op.notBetween,
-            $overlap: Op.overlap,
-            $contains: Op.contains,
-            $contained: Op.contained,
-            $adjacent: Op.adjacent,
-            $strictLeft: Op.strictLeft,
-            $strictRight: Op.strictRight,
-            $noExtendRight: Op.noExtendRight,
-            $noExtendLeft: Op.noExtendLeft,
-            $and: Op.and,
-            $or: Op.or,
-            $any: Op.any,
-            $all: Op.all,
-            $values: Op.values,
-            $col: Op.col
-        }
+
 
         [Op.and]: {a: 5}           // 且 (a = 5)
         [Op.or]: [{a: 5}, {a: 6}]  // (a = 5 或 a = 6)
@@ -62,3 +27,9 @@
         [Op.contained]: [1, 2]     // <@ [1, 2] (PG数组包含于运算符)
         [Op.any]: [2,3]            // 任何数组[2, 3]::INTEGER (仅限PG)
         [Op.col]: 'user.organization_id' // = 'user'.'organization_id', 使用数据库语言特定的列标识符, 本例使用 PG
+
+        XXX 关注了你  - 「这则属于资源发布提醒」
+        XXX 喜欢了你的文章 《消息通知系统模型设计》  - 「这则属于资源发布提醒」
+        你喜欢的文章《消息通知系统模型设计》有新的评论  - 「这则属于资源订阅提醒」
+        你的文章《消息通知系统模型设计》已被加入专题 《系统设计》 - 「这则属于系统提醒」
+        小明赞同了你的回答 XXXXXXXXX  -「这则属于资源发布提醒」

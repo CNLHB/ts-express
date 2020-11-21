@@ -25,7 +25,6 @@ export default class Message  extends Model<Message>{
     toId: number
     @Column
     belong: number
-
     @Column({ field: "c_id" })
     cId: number
 }

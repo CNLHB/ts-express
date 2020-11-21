@@ -2,16 +2,17 @@ import { Router, RequestHandler } from 'express';
 import 'reflect-metadata';
 
 const router = Router();
-let mapRouter = {}
+const mapRouter = {}
 enum Method {
   get = 'get',
-  post = 'post'
+  post = 'post',
+  put = 'put',
+  delete = 'delete'
 }
 
 
 export function controller(target: any) {
   // console.log(Object.getOwnPropertyNames(target.prototype));
-
   for (let key in mapRouter) {
     const path = Reflect.getMetadata('path', mapRouter, key);
     const method: Method = Reflect.getMetadata('method', mapRouter, key);
@@ -46,8 +47,9 @@ function getRequestDecorator(type: string) {
   };
 }
 
-export const get = getRequestDecorator('get');
-export const post = getRequestDecorator('post');
-export const put = getRequestDecorator('put');
-export const del = getRequestDecorator('delete');
+export const get = getRequestDecorator(Method.get);
+export const post = getRequestDecorator(Method.post);
+export const put = getRequestDecorator(Method.put);
+export const del = getRequestDecorator(Method.delete);
+
 export default router

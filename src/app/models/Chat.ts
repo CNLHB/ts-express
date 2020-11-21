@@ -1,4 +1,6 @@
-import {Column, Model, Table} from "sequelize-typescript";
+import {AllowNull, Column, HasMany, HasOne, Model, NotNull, Table} from "sequelize-typescript";
+import Message from "./Message";
+import Users from "./Users";
 
 
 @Table({
@@ -16,14 +18,27 @@ export default class Chat  extends Model<Chat>{
     /**
      * 聊天窗口是否删除
      */
+    @AllowNull
     @Column
     status: boolean
-
     @Column({ field: "from_id" })
     fromId: number;
     @Column({ field: "to_id" })
     toId: number
     @Column
     belong: number
+    @HasMany(() => Message,"cId")
+    messages: Message;
+    @HasOne(() => Users,"id")
+    user: Users;
 
 }
+// var include = [{
+//     model: Customer,
+//     required: true,
+//     attributes: ['name'],
+// }]
+// Order.findAll({include:include, attributes:[[sequelize.fn('SUM', sequelize.col('price')), 'sum']],
+// group:'Customer.name', having:['COUNT(?)>?', 'name', 1], raw:true, rollup:true}).then(function(result){
+//     console.log(result);
+// })

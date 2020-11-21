@@ -17,7 +17,7 @@ app.use(
       maxAge: 24 * 60 * 60 * 1000
     })
   );
-app.use(router);
+app.use('/api',router);
 
 app.listen(520, () => {
   console.log('server is running');

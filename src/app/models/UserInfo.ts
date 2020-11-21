@@ -21,7 +21,8 @@ export default class UserInfo extends Model<UserInfo> {
   @AllowNull
   @Column({ field: "u_id" })
   userId: number;
-
+  @Column({ field: "wx_code" })
+  wxCode: string;
   @Column
   adress: string;
   @Column

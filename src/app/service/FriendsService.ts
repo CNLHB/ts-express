@@ -55,6 +55,7 @@ export  default class FriendsService{
             return item.fromId;
         });
         let users = await Users.findAll({
+            raw: true,
             where: {
                 id: { [Op.in]: ids },
             },

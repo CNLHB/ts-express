@@ -20,18 +20,26 @@ export default class Users extends Model<Users> {
   @Column({field:"user_name"})
   userName: string;
   @Column
+  nickname: string;
+  @Column({field:"name_update_date"})
+  nameUpdateDate: Date;
+  @Column
   phone: string;
   @Column
-  images: string;
+  image: string;
   @Column
   email: string;
   @Column
   account: string;
   @Column
   password: string;
-
+  @Column({field:"bind_wx"})
+  bindWx: boolean;
   @HasOne(() => UserInfo,"userId")
   userInfo: UserInfo;
+
+
+
   isActive:number
   static async getList<T extends Users>() {
     const results = await this.findAll({

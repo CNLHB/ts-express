@@ -15,7 +15,7 @@ export default class UserService{
                     id
                 },
                 attributes: {
-                    exclude:["deleted_at"]
+                    exclude:["deleted_at","wx_code"]
                 }
             }],
         })
