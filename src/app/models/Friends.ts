@@ -1,6 +1,6 @@
 import { Table, Column, Model } from "sequelize-typescript";
 @Table({
-  tableName: "friends",
+  tableName: "t_friends",
 })
 export default class Friends extends Model<Friends> {
   @Column({
@@ -14,6 +14,10 @@ export default class Friends extends Model<Friends> {
 
   @Column({ field: "to_id" })
   toId: number;
-
+  /**
+   * 关注类型 0用户   1 项目
+   */
+  @Column
+  type: number;
 
 }

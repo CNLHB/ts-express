@@ -38,6 +38,9 @@ export  default class ChatService{
                         { fromId: fromId, toId:toId },
                         { fromId: toId, toId:fromId }
                     ]
+                },
+                attributes:{
+                    exclude: ["deleted_at"] 
                 }
             })
             let retToId: Chat = await Chat.findOne({

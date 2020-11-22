@@ -1,4 +1,5 @@
 import {Sequelize} from 'sequelize-typescript'
+
 const Op = Sequelize.Op;
 export const operatorsAliases = {
     $eq: Op.eq,
@@ -36,3 +37,5 @@ export const operatorsAliases = {
     $values: Op.values,
     $col: Op.col
 };
+export const notify_action_type = ["donated", "conllected", "commented", "updated"],
+    notify_object_type = ["project", "comment"]

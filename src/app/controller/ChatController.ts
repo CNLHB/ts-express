@@ -9,6 +9,7 @@ class ChatController{
     @post("/chat")
     async createChatByFromIdAndToId(req: Request, res: Response){
         const {fromId, toId} = req.body
+
         if (fromId&&toId){
             let chat = await ChatService.createChatByFromIdAndToId(parseInt(fromId),parseInt(toId))
             res.json(getResponseData(chat))
