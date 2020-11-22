@@ -14,7 +14,7 @@
 
 > 无特殊说明所有接口数据都是以json格式发送   ['Content-Type'] = 'application/json;charset=UTF-8';
 >
-> 登录状态下携带cookie：sign-cooike
+> 登录状态下自动携带cookie：sign-cooike
 >
 > 统一前缀    /api 
 >

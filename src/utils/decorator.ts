@@ -1,8 +1,7 @@
 import { Router, RequestHandler } from 'express';
 import 'reflect-metadata';
-
 const router = Router();
-const mapRouter = {}
+const mapRouter:Map<string,RequestHandler> = new Map<string,RequestHandler>()
 enum Method {
   get = 'get',
   post = 'post',
@@ -12,11 +11,10 @@ enum Method {
 
 
 export function controller(target: any) {
-  // console.log(Object.getOwnPropertyNames(target.prototype));
   for (let key in mapRouter) {
     const path = Reflect.getMetadata('path', mapRouter, key);
     const method: Method = Reflect.getMetadata('method', mapRouter, key);
-    const handler = mapRouter[key];
+    const handler =  mapRouter.get(key)
     const middleware = Reflect.getMetadata('middleware', mapRouter, key);
     if (path && method && handler) {
       if (middleware) {
@@ -39,8 +37,7 @@ function getRequestDecorator(type: string) {
   return function(path: string) {
     const newPath = path.startsWith("/")?path: `/${path}`
     return function(target: any, key: string,descriptor:any) {
-      //descriptor.value
-      mapRouter[key] = descriptor.value
+      mapRouter.set(key,descriptor.value)
       Reflect.defineMetadata('path', newPath, mapRouter, key);
       Reflect.defineMetadata('method', type, mapRouter, key);
     };
