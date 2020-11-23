@@ -46,7 +46,7 @@ export default class MessageService {
         return true
     }
 
-    static async  getMessageListById(id:number,type: MESSAGE_TYPE):Promise<Chat[]>{
+    static async  getMessageListByUId(id:number,type: MESSAGE_TYPE):Promise<Chat[]>{
         let chatList: Chat[];
         let find;
         if (type == MESSAGE_TYPE.ALL){
@@ -88,33 +88,56 @@ export default class MessageService {
     static async sendMessageToUser(cId: number, fromId: number, toId: number, message: string) {
 
 
-        await Message.create({
-            fromId, toId, message, cId, belong: fromId, status: false
-        })
-        const chat: Chat = await Chat.findOne({
-            raw: true,
-            where: {
-                fromId: fromId, toId: toId, belong: toId
-            }
-        })
-        await Chat.update({
-            afterMessage: message
-        }, {
-            where: {
-                fromId, toId, belong: toId
-            }
-        })
+        try {
+            /**
+             * 接受用户的chat ID
+             */
+            const chat: Chat = await Chat.findOne({
+                raw: true,
+                where: {
+                    belong: toId,
+                    $or:[
+                        {
+                            fromId: fromId, toId: toId
+                        },
+                        {
+                            fromId: toId, toId: fromId
+                        }
+                    ]
+                }
+            })
+            await Message.create({
+                fromId, toId, message, cId, belong: fromId, status: false
+            })
+            await Chat.update({
+                afterMessage: message
+            }, {
+                where: {
+                    belong: toId,
+                    $or:[
+                        {
+                            fromId: fromId, toId: toId
+                        },
+                        {
+                            fromId: toId, toId: fromId
+                        }
+                    ]
+                }
+            })
 
-        await Message.create({
-            fromId: fromId, toId: toId, message, cId: chat.id, belong: toId, status: false
-        })
-        await Chat.update({
-            afterMessage: message
-        }, {
-            where: {
-                fromId, toId, belong: fromId
-            }
-        })
+            await Message.create({
+                fromId: fromId, toId: toId, message, cId: chat.id, belong: toId, status: false
+            })
+            await Chat.update({
+                afterMessage: message
+            }, {
+                where: {
+                    id:cId
+                }
+            })
+        }catch (e) {
+            console.log(e)
+        }
 
     }
 }

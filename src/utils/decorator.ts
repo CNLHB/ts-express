@@ -11,10 +11,10 @@ enum Method {
 
 
 export function controller(target: any) {
-  for (let key in mapRouter) {
+  for (const [key,value] of mapRouter) {
     const path = Reflect.getMetadata('path', mapRouter, key);
     const method: Method = Reflect.getMetadata('method', mapRouter, key);
-    const handler =  mapRouter.get(key)
+    const handler =  value
     const middleware = Reflect.getMetadata('middleware', mapRouter, key);
     if (path && method && handler) {
       if (middleware) {
@@ -24,10 +24,12 @@ export function controller(target: any) {
       }
     }
   }
+  mapRouter.clear()
 }
 
 export function use(middleware: RequestHandler) {
   return function(target: any, key: string) {
+    // mapRouter.set(key,target.value)
     Reflect.defineMetadata('middleware', middleware, target, key);
   };
 }

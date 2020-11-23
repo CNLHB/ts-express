@@ -38,4 +38,4 @@ export const operatorsAliases = {
     $col: Op.col
 };
 export const notify_action_type = ["donated", "conllected", "commented", "updated"],
-    notify_object_type = ["project", "comment"]
+    notify_object_type = ["project", "comment","user"]

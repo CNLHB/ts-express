@@ -15,13 +15,13 @@ class MessageController{
     @get("/unreadmessage/:id")
     async getUnreadMessageListById(req: Request, res: Response){
         const id =  parseInt(req.params.id)
-        let messages = await MessageService.getMessageListById(id,MESSAGE_TYPE.UN_READ_TYPE)
+        let messages = await MessageService.getMessageListByUId(id,MESSAGE_TYPE.UN_READ_TYPE)
         res.json(getResponseData(messages))
     }
     @get("/message/:id")
     async getAllMessageListById(req: Request, res: Response){
         const id =  parseInt(req.params.id)
-        let messages = await MessageService.getMessageListById(id,MESSAGE_TYPE.ALL)
+        let messages = await MessageService.getMessageListByUId(id,MESSAGE_TYPE.ALL)
         res.json(getResponseData(messages))
     }
     @post("/message")

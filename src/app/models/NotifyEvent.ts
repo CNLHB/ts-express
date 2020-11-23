@@ -11,12 +11,12 @@ export default class NotifyEvent  extends Model<NotifyEvent>{
     })
     id: number;
     /**
-     *  通知用户id
+     *  被通知用户id
      */
     @Column({ field: "u_id" })
     uId: number
     /**
-     *  提醒动作 如：捐款/更新/评论/收藏
+     *  提醒动作 如：点赞/更新/评论/收藏
      */
     @Column
     action: string
@@ -30,12 +30,24 @@ export default class NotifyEvent  extends Model<NotifyEvent>{
      * 对象ID，如：⽂章ID 用户ID，团队ID；
      */
     @Column({ field: "object_id" })
-    objectId: string;
+    objId: string;
     /**
      * 对象所属类型，如：⼈、⽂章、活动、视频等；
      */
     @Column({ field: "object_type" })
-    objectType: string
+    objType: string
+
+    /**
+     * 作用对象ID，如：⽂章ID 用户ID，团队ID；
+     */
+    @Column({ field: "effect_object_id" })
+    effObjId: string;
+    /**
+     * 作用对象所属类型，如：⼈、⽂章、活动、视频等；
+     */
+    @Column({ field: "effect_object_type" })
+    effObjType: string
+
 
 
 }
