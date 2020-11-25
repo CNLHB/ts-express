@@ -1,8 +1,6 @@
 import { controller, get, post } from "../../utils/decorator";
 import { Request, Response } from "express";
-import {getResponseData, ResultCode} from "../../utils/utils";
-import Users from "../models/Users";
-import UserInfo from './../models/UserInfo';
+import { getResponseData, ResultCode } from "../../utils/utils";
 import UserService from "../service/UserSerive";
 interface BodyRequest extends Request {
   body: { [key: string]: string | undefined };
@@ -13,17 +11,18 @@ export default class UserController {
   @get("/user/:id")
   async userInfo(req: BodyRequest, res: Response) {
     try {
-      const id =  parseInt(req.params.id)
-      const userInfo =await UserService.queryUserById(id);
+      const id = parseInt(req.params.id);
+      const userInfo = await UserService.queryUserById(id);
       res.json(getResponseData(userInfo));
     } catch (error) {
-      res.json(getResponseData("","request error",ResultCode.ERROR_CODE));
+      res.json(getResponseData("", "request error", ResultCode.ERROR_CODE));
       console.log(error);
     }
   }
   @get("/")
   getHome(req: BodyRequest, res: Response) {
     const isLogin = req.session ? req.session.login : false;
+    console.log(isLogin);
 
     if (isLogin) {
       res.send(`
@@ -31,7 +30,7 @@ export default class UserController {
               <body>
                 <a href='/getData'>获取内容</a>
                 <a href='/showData'>展示内容</a>
-                <a href='/logout'>退出</a>
+                <a href='/api/logout'>退出</a>
               </body>
             </html>
           `);
@@ -39,7 +38,8 @@ export default class UserController {
       res.send(`
             <html>
               <body>
-                <form method="post" action="/login">
+                <form method="post" action="/api/login">
+                <input type="text" name="userName" />
                   <input type="password" name="password" />
                   <button>登陆</button>
                 </form>
@@ -49,29 +49,28 @@ export default class UserController {
     }
   }
   @post("/login")
-  login(req: BodyRequest, res: Response) {
-    const { password } = req.body;
+  async login(req: BodyRequest, res: Response) {
+    const { userName, password } = req.body;
     const isLogin = req.session ? req.session.login : false;
     if (isLogin) {
-      res.send("已经登陆过");
+      res.json(getResponseData("已经登陆过"));
     } else {
-      if (password === "123" && req.session) {
-        req.session.login = true;
-        res.send("登陆成功");
+      const user = await UserService.login(userName, password);
+      if (user) {
+        req.session.login = user.id;
+        res.json(getResponseData(user));
       } else {
-        res.send("登陆失败");
+        res.json(
+          getResponseData("", "账号或密码错误", ResultCode.UNAUTHORIZED_CODE)
+        );
       }
     }
   }
   @get("/logout")
   logout(req: BodyRequest, res: Response) {
     if (req.session) {
-      req.session.login = undefined;
+      req.session = null;
     }
-    res.redirect("/");
+    res.json(getResponseData("退出登录"));
   }
-
 }
-  
-//
-

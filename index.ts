@@ -8,7 +8,17 @@ import  './src/app/controller/index';
 
 
 const app = express()
+app.use('/static', express.static('public'));
 app.use(bodyParser.json());
+app.use(async function(err, req, res, next) {
+    // logic
+    try{
+        await next()
+    }catch(err){
+        console.error(err)
+        res.json({})
+    }
+});
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
     cookieSession({

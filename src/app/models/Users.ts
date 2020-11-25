@@ -1,14 +1,8 @@
-import {
-  Table,
-  Column,
-  Model,
-  HasMany,
-  HasOne
-} from "sequelize-typescript";
-import UserInfo from './UserInfo';
+import { Table, Column, Model, HasOne } from "sequelize-typescript";
+import UserInfo from "./UserInfo";
 
 @Table({
-  tableName: "users"
+  tableName: "users",
 })
 export default class Users extends Model<Users> {
   @Column({
@@ -17,11 +11,11 @@ export default class Users extends Model<Users> {
   })
   id: number;
 
-  @Column({field:"user_name"})
+  @Column({ field: "user_name" })
   userName: string;
   @Column
   nickname: string;
-  @Column({field:"name_update_date"})
+  @Column({ field: "name_update_date" })
   nameUpdateDate: Date;
   @Column
   phone: string;
@@ -33,22 +27,19 @@ export default class Users extends Model<Users> {
   account: string;
   @Column
   password: string;
-  @Column({field:"bind_wx"})
+  @Column({ field: "bind_wx" })
   bindWx: boolean;
-  @HasOne(() => UserInfo,"userId")
+  @HasOne(() => UserInfo, "userId")
   userInfo: UserInfo;
 
-
-
-  isActive:number
+  isActive: number;
   static async getList<T extends Users>() {
     const results = await this.findAll({
       raw: true,
-      attributes:{
-        exclude:["password","deleted_at"]
-      }
+      attributes: {
+        exclude: ["password", "deleted_at"],
+      },
     });
     return results as T[];
   }
 }
-// attributes: { exclude: ['baz'] },

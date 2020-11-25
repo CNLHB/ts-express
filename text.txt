@@ -33,3 +33,15 @@
         你喜欢的文章《消息通知系统模型设计》有新的评论  - 「这则属于资源订阅提醒」
         你的文章《消息通知系统模型设计》已被加入专题 《系统设计》 - 「这则属于系统提醒」
         小明赞同了你的回答 XXXXXXXXX  -「这则属于资源发布提醒」
+
+        content: 你所在的工程 <a href='https://lceda.cn/lceda-editor-training/ba-yin-dian-zi-qin-ai-hua' 
+        target='_blank' style='text-decoration: none; color:#58f;'> 八音电子琴-爱华</a>
+         的所有者由 <a href='https://lceda.cn/lcedaxiaoju' target='_blank' style='text-decoration: none; color:#58f;'>
+          爱华</a> 更变为 <a href='https://lceda.cn/lceda-editor-training' 
+          target='_blank' style='text-decoration: none; color:#58f;'>
+           立创EDA使用培训</a>
+
+           <a href='https://lceda.cn/beishi' target='_blank' style='text-decoration: none; color:#58f;'> beishi</a> 关注了你
+
+           a  ===>  b
+           

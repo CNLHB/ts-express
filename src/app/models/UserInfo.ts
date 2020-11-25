@@ -1,15 +1,8 @@
-import {
-  Table,
-  Column,
-  Model,
-  ForeignKey,
-  AllowNull,
-  BelongsTo,
-} from "sequelize-typescript";
+import { Table, Column, Model, ForeignKey } from "sequelize-typescript";
 import Users from "./Users";
 
 @Table({
-  tableName: "user_info"
+  tableName: "user_info",
 })
 export default class UserInfo extends Model<UserInfo> {
   @Column({
@@ -18,7 +11,6 @@ export default class UserInfo extends Model<UserInfo> {
   })
   id: number;
   @ForeignKey(() => Users)
-  @AllowNull
   @Column({ field: "u_id" })
   userId: number;
   @Column({ field: "wx_code" })
@@ -38,18 +30,16 @@ export default class UserInfo extends Model<UserInfo> {
   //技能
   @Column
   get skill(): string {
-    return this.getDataValue("name")
-      ? this.getDataValue("name").split(",")
+    return this.getDataValue("skill")
+      ? this.getDataValue("skill").split(",")
       : [];
   }
-  set name(value: string) {
-    this.setDataValue("name", value);
+  set skill(value: string) {
+    this.setDataValue("skill", value);
   }
   //简介
   @Column
   profile: string;
-  
-  isActive:number
 
+  isActive: number;
 }
-// attributes: { exclude: ['baz'] },
