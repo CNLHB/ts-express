@@ -1,5 +1,5 @@
 import { Response, Request, NextFunction } from "express";
-import { ResultCode, getResponseData } from "./utils";
+import { ResultCode, getResponseData } from "../utils";
 export const validateCookieID = function (
   req: Request,
   res: Response,

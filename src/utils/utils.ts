@@ -1,3 +1,5 @@
+import { Request } from "express";
+import * as QueryString from "querystring";
 export const enum ResultCode {
   SUCESS_CODE = 0,
   BAD_REQUEST_CODE = 10000,
@@ -17,10 +19,18 @@ interface Result {
   msg: string;
   data: any;
 }
-export interface IPage {
+// QueryString.ParsedQs
+export interface IPageBodyRequest extends Request{
+    query:{
+      page:string,
+      pageSize:string,
+    }
+
+}
+export interface IPage<T> {
   page: number;
   pageSize: number;
-  list: any;
+  list: T;
   total: number;
 }
 export interface IPageCount<T> {
@@ -50,7 +60,7 @@ export const pageResult = (
   pageSize: number,
   total: number,
   list: any
-): IPage => {
+): IPage<any> => {
   return {
     page,
     pageSize,

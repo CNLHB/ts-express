@@ -1,9 +1,10 @@
 import { controller, get, use } from "../../utils/decorator";
 import { Request, Response } from "express";
-import { getResponseData, ResultCode, ResultErrorMsg } from "../../utils/utils";
+import {getResponseData, IPageBodyRequest, ResultCode, ResultErrorMsg} from "../../utils/utils";
 import FriendsService from "../service/FriendsService";
 import TeamService from "../service/TeamService";
-import { validateCookieID } from "../../utils/validateCookieID";
+import { validateCookieID } from "../../utils/middleware/validateCookieID";
+import {setPageOrPageSize} from "../../utils/middleware/setPageOrPageSize";
 interface BodyRequest extends Request {
   body: { [key: string]: string | undefined };
 }
@@ -11,12 +12,15 @@ interface BodyRequest extends Request {
 @controller
 export default class UserController {
   @get("friend/user")
+  @use(setPageOrPageSize)
   @use(validateCookieID)
-  async getFriendList(req: BodyRequest, res: Response) {
+  async getFriendList(req: IPageBodyRequest, res: Response) {
     let uid = req.session.login;
+    let page:number = parseInt(req.query.page );
+    let pageSize:number = parseInt(req.query.pageSize);
     const id: number = parseInt(uid);
     try {
-      const friends = await FriendsService.getFriendList(id);
+      const friends = await FriendsService.getFriendList(id,page, pageSize);
       res.json(getResponseData(friends));
     } catch (error) {
       res.json(
@@ -29,15 +33,15 @@ export default class UserController {
     }
   }
   @get("friend/team")
+  @use(setPageOrPageSize)
   @use(validateCookieID)
-  async getTeamListByUId(req: BodyRequest, res: Response) {
+  async getTeamListByUId(req: IPageBodyRequest, res: Response) {
     let uid = req.session.login;
-    let page = req.query.page as string;
-    let pageSize = req.query.page as string;
-
+    let page:number = parseInt(req.query.page);
+    let pageSize:number = parseInt(req.query.pageSize);
     const id: number = parseInt(uid);
     try {
-      const friends = await TeamService.getTeamListByUId(id);
+      const friends = await TeamService.getTeamListByUId(id,page, pageSize);
       res.json(getResponseData(friends));
     } catch (error) {
       res.json(
@@ -50,12 +54,15 @@ export default class UserController {
     }
   }
   @get("user/fans/:id")
+  @use(setPageOrPageSize)
   @use(validateCookieID)
-  async getFansList(req: BodyRequest, res: Response) {
+  async getFansList(req: IPageBodyRequest, res: Response) {
     let uid = req.session.login;
     const id: number = parseInt(uid);
+    let page:number = parseInt(req.query.page);
+    let pageSize:number = parseInt(req.query.pageSize);
     try {
-      const friends = await FriendsService.getFansList(id);
+      const friends = await FriendsService.getFansList(id,page,pageSize);
       res.json(getResponseData(friends));
     } catch (error) {
       res.json(

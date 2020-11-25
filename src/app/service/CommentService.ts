@@ -18,7 +18,7 @@ export default class CommentService {
       include: [
         {
           model: Users,
-          as:"fromUser",
+          as:"commentUser",
           attributes: ["id","userName","nickname","image"]
         },{
           model: Users,

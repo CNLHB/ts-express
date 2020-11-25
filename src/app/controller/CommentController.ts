@@ -8,7 +8,7 @@ import {
 } from "../../utils/utils";
 import ChatService from "../service/ChatService";
 import Chat from "../models/Chat";
-import { validateCookieID } from "../../utils/validateCookieID";
+import { validateCookieID } from "../../utils/middleware/validateCookieID";
 import CommentService from "../service/CommentService";
 
 @controller

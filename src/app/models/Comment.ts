@@ -35,8 +35,8 @@ export default class Comment extends Model<Comment> {
   toId: number;
   @Column
   content: string;
-  @BelongsTo(() => Users, { as:"fromUser",foreignKey: "fromId" })
-  fromUser
+  @BelongsTo(() => Users, { as:"commentUser",foreignKey: "fromId" })
+  commentUser
   @BelongsTo(() => Users, { as:"owner",foreignKey: "toId" })
   owner;
   @BelongsTo(() => Project)

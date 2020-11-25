@@ -8,7 +8,7 @@ import {
 } from "../../utils/utils";
 import ChatService from "../service/ChatService";
 import Chat from "../models/Chat";
-import { validateCookieID } from "../../utils/validateCookieID";
+import { validateCookieID } from "../../utils/middleware/validateCookieID";
 
 @controller
 class ChatController {
@@ -45,7 +45,6 @@ class ChatController {
     let { type = "all", page = 1, pageSize = 10 } = req.query;
     page = parseInt(page as string);
     pageSize = parseInt(pageSize as string);
-
     let chatList = await ChatService.queryChatListById(
       parseInt(uid),
       type as string,
