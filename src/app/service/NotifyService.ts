@@ -1,4 +1,3 @@
-import Sequelize from "sequelize";
 import { notify_action_type, statusMap, objTypeMap } from "../../config/config";
 import { notifyTemp, INotifyObj } from "../../config/Notifytemplate";
 import NotifyEvent from "../models/NotifyEvent";
@@ -7,6 +6,7 @@ import Users from "../models/Users";
 import Team from "../models/Team";
 import Coupon from "../models/Coupon";
 import { pageResult, IPage, IPageCount } from "../../utils/utils";
+import Comment from "../models/Comment";
 
 interface INotifyResult {
   status?: string;
@@ -44,7 +44,17 @@ export default class NotifyService {
     } else if (type == "system") {
       condition = {
         uId,
-        objTypeId: 4,
+        actionId: 9,
+      };
+    }else if(type == "comment") {
+      // CommentService.queryProjectCommentListByUid()
+      condition = {
+        uId,
+        actionId: 3,
+      };
+    }else {
+      condition = {
+        uId,
       };
     }
     let notifys = await this.createNotifys(condition, page, pageSize);
@@ -96,7 +106,7 @@ export default class NotifyService {
         where: {
           id: notify.objId,
         },
-        attributes: ["userName", "nickname"],
+        attributes: ["id","userName", "nickname"],
       });
     } else if (objTypeMap[notify.objTypeId] == "project") {
       obj = await Project.findOne({
@@ -104,7 +114,7 @@ export default class NotifyService {
         where: {
           id: notify.objId,
         },
-        attributes: ["name", "nickname"],
+        attributes: ["id","name", "nickname"],
       });
     } else if (objTypeMap[notify.objTypeId] == "team") {
       obj = await Team.findOne({
@@ -112,7 +122,7 @@ export default class NotifyService {
         where: {
           id: notify.objId,
         },
-        attributes: ["name", "nickname"],
+        attributes: ["id","name", "nickname"],
       });
     } else if (objTypeMap[notify.objTypeId] == "system") {
       obj = {};
@@ -125,7 +135,7 @@ export default class NotifyService {
           where: {
             id: notify.effObjId,
           },
-          attributes: ["userName", "nickname"],
+          attributes: ["id","userName", "nickname"],
         });
       } else if (objTypeMap[notify.effObjType] == "project") {
         effObj = await Project.findOne({
@@ -133,7 +143,7 @@ export default class NotifyService {
           where: {
             id: notify.effObjId,
           },
-          attributes: ["name", "nickname"],
+          attributes: ["id","name", "nickname"],
         });
       } else if (objTypeMap[notify.effObjType] == "team") {
         effObj = await Team.findOne({
@@ -141,7 +151,7 @@ export default class NotifyService {
           where: {
             id: notify.effObjId,
           },
-          attributes: ["name", "nickname"],
+          attributes: ["id","name", "nickname"],
         });
       } else if (objTypeMap[notify.effObjType] == "coupon") {
         effObj = await Coupon.findOne({
@@ -149,7 +159,7 @@ export default class NotifyService {
           where: {
             id: notify.effObjId,
           },
-          attributes: ["name", "nickname"],
+          attributes: ["id","name", "nickname"],
         });
       }
     }
@@ -167,7 +177,17 @@ export default class NotifyService {
     obj: INotifyObj,
     effectObj?: INotifyObj
   ): Promise<string> {
-    return notifyTemp(actionType, obj, effectObj);
+    let comment:any = {}
+    if (actionType == "comment"){
+      comment = await Comment.findOne({
+        where:{
+          projectId: effectObj.id,
+          fromId:obj.id
+        }
+      })
+      console.log(comment)
+    }
+    return notifyTemp(actionType, obj, effectObj,comment?comment:{});
   }
   //创建通知
   static async createNotifyByUId(uId: number): Promise<void> {

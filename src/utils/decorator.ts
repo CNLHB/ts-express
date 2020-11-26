@@ -5,9 +5,9 @@ const mapRouter: Map<string, RequestHandler> = new Map<
   string,
   RequestHandler
 >();
-const mapMiddleware: Map<string, RequestHandler> = new Map<
+const mapMiddleware: Map<string, RequestHandler[]> = new Map<
   string,
-  RequestHandler
+  RequestHandler[]
 >();
 enum Method {
   get = "get",
@@ -25,7 +25,7 @@ export function controller(target: any) {
     const middleware = mapMiddleware.get(key);
     if (path && method && handler) {
       if (middleware) {
-        router[method](path, middleware, handler);
+        router[method](path, ...middleware, handler);
       } else {
         router[method](path, handler);
       }
@@ -37,7 +37,13 @@ export function controller(target: any) {
 export function use(middleware: RequestHandler) {
   return function (target: any, key: string) {
     // mapRouter.set(key,target.value)
-    mapMiddleware.set(key, middleware);
+    if (mapMiddleware.get(key)){
+      let midd =  mapMiddleware.get(key)
+      mapMiddleware.set(key, [middleware,...midd]);
+    }else {
+      mapMiddleware.set(key, [middleware]);
+    }
+
     Reflect.defineMetadata("middleware", middleware, mapMiddleware, key);
   };
 }

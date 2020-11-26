@@ -44,4 +44,10 @@
            <a href='https://lceda.cn/beishi' target='_blank' style='text-decoration: none; color:#58f;'> beishi</a> 关注了你
 
            a  ===>  b
+          "<a  href='https://lceda.cn/lcedaxiaoju' target='_blank'
+           style='text-decoration: none; color:#58f;'>爱华</a> 评论了工程
+            <a href='https://lceda.cn/lcedaxiaoju/aiwa-team'
+             target='_blank' style='text-decoration: none; color:#58f;'>
+             aiwa-team</a> :  U1S1，这教学，爱了爱了。"
+
            

@@ -1,9 +1,9 @@
 import { Sequelize } from "sequelize-typescript";
 export const notify_action_type = {
     1: "like",
-    2: "conllected",
-    3: "commented",
-    4: "updated",
+    2: "conllect",
+    3: "comment",
+    4: "update",
     5: "focus",
     6: "project_change",
     7: "project_add",
