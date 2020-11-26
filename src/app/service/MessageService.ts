@@ -34,21 +34,35 @@ export default class MessageService {
     }
     return [];
   }
-  static async readMessage(id: number): Promise<boolean> {
-    let [count] = await Message.update(
-      { status: true },
-      {
-        where: {
-          id,
-        },
+
+  /**
+   * 改变消息状态
+   * @param ids
+   */
+  static async readMessage(ids: number[]): Promise<boolean> {
+    try {
+      for (const  id of ids){
+        let [count] = await Message.update(
+            { status: true },
+            {
+              where: {
+                id,
+              },
+            }
+        );
       }
-    );
-    if (count == 0) {
+    }catch (e) {
+      console.log(e)
       return false;
     }
     return true;
   }
 
+  /**
+   * 获取信息
+   * @param id
+   * @param type
+   */
   static async getMessageListByUId(
     id: number,
     type: MESSAGE_TYPE
@@ -92,6 +106,14 @@ export default class MessageService {
     }
     return [];
   }
+
+  /**
+   * 发送信息
+   * @param cId
+   * @param fromId
+   * @param toId
+   * @param message
+   */
   static async sendMessageToUser(
     cId: number,
     fromId: number,
@@ -99,9 +121,7 @@ export default class MessageService {
     message: string
   ) {
     try {
-      /**
-       * 接受用户的chat ID
-       */
+
       const chat: Chat = await Chat.findOne({
         raw: true,
         where: {

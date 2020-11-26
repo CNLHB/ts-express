@@ -9,8 +9,17 @@ interface BodyRequest extends Request {
   body: { [key: string]: string | undefined };
 }
 
+/**
+ * 用户关注接口
+ */
 @controller
-export default class UserController {
+export default class FriendController {
+
+  /**
+   * 获取关注的好友
+   * @param const {type, page, pageSize }  = req.query
+   * @param res
+   */
   @get("friend/user")
   @use(setPageOrPageSize)
   @use(validateCookieID)
@@ -32,6 +41,11 @@ export default class UserController {
       );
     }
   }
+  /**
+   * 获取关注的团队
+   * @param const {type, page, pageSize }  = req.query
+   * @param res
+   */
   @get("friend/team")
   @use(setPageOrPageSize)
   @use(validateCookieID)
@@ -53,6 +67,12 @@ export default class UserController {
       );
     }
   }
+
+  /**
+   * 获取用户的粉丝
+   * @param const {type, page, pageSize }  = req.query
+   * @param res
+   */
   @get("user/fans/:id")
   @use(setPageOrPageSize)
   @use(validateCookieID)

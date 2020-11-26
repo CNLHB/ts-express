@@ -35,4 +35,32 @@ export default class UserService {
     });
     return user;
   }
+  static async register(userName: string, password: string): Promise<Boolean> {
+    let [ret,flag] = await Users.findOrCreate({
+      where:{
+        userName
+      },
+      defaults:{
+        userName,
+        password,
+      }
+    })
+    if (flag){
+      UserInfo.create({
+        userId: ret.id
+      })
+      return flag;
+    }else{
+      return flag;
+    }
+    // let user = await Users.create({
+    //     userName,
+    //     password,
+    // });
+    // UserInfo.create({
+    //   userId:user.id
+    // })
+    // return user;
+  }
+
 }

@@ -8,6 +8,7 @@ package-lock.json
 yarn.lock
 coverage/
 .idea/
+.cache/
 run/
 .DS_Store
 *.sw*

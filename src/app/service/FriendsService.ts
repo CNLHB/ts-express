@@ -26,7 +26,7 @@ export default class FriendsService {
         where: {
           id: { [Op.in]: ids },
         },
-        attributes: ["id", "userName", "image"],
+        attributes: ["id", "userName",'nickname', "image"],
       });
       for (let item of users) {
         const ret: Friends = await Friends.findOne({

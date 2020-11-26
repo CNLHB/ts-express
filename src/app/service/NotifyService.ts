@@ -25,7 +25,7 @@ export default class NotifyService {
     read: string,
     page: number,
     pageSize: number
-  ): Promise<IPage> {
+  ): Promise<IPage<NotifyEvent>> {
     let condition = {};
     if (type == "all" && read == undefined) {
       condition = {

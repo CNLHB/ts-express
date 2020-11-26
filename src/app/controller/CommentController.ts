@@ -1,23 +1,26 @@
-import { controller, get, post, use } from "../../utils/decorator";
-import { Response, Request } from "express";
+import {controller, get, post, use} from "../../utils/decorator";
+import {Response } from "express";
 import {
-  getResponseData,
-  pageResult,
-  ResultCode,
-  ResultErrorMsg,
+    getResponseData, IPageBodyRequest,
 } from "../../utils/utils";
-import ChatService from "../service/ChatService";
-import Chat from "../models/Chat";
-import { validateCookieID } from "../../utils/middleware/validateCookieID";
+import {validateCookieID} from "../../utils/middleware/validateCookieID";
 import CommentService from "../service/CommentService";
+import {setPageOrPageSize} from "../../utils/middleware/setPageOrPageSize";
 
 @controller
 class CommentController {
-  @get("/comment")
-  @use(validateCookieID)
-  async queryProjectCommentListByUid(req: Request, res: Response) {
-    let uid = req.session.login;
-    let comments = await CommentService.queryProjectCommentListByUid(uid);
-    res.json(getResponseData(comments));
-  }
+    /**
+     * 获取请求登录用户发表的评论
+     * @param req.session.login
+     */
+    @get("/comment")
+    @use(setPageOrPageSize)
+    @use(validateCookieID)
+    async queryProjectCommentListByUid(req: IPageBodyRequest, res: Response) {
+        let uid = req.session.login;
+        const {page, pageSize} = req.query
+        let comments = await CommentService.queryProjectCommentListByUid(uid, parseInt(page),
+            parseInt(pageSize));
+        res.json(getResponseData(comments));
+    }
 }

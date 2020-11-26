@@ -1,13 +1,14 @@
 import express from 'express'
 import bodyParser from 'body-parser';
 import cookieSession from  'cookie-session';
+import cors from  'cors';
 import router from  './src/utils/decorator';
 import  './src/config/ts-sequelize';
 import  './src/app/controller/index';
 
 
-
 const app = express()
+app.use(cors());
 app.use('/static', express.static('public'));
 app.use(bodyParser.json());
 app.use(async function(err, req, res, next) {
