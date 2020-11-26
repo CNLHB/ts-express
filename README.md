@@ -1,5 +1,5 @@
 ## 源码目录
-
+[接口文档地址](https://easydoc.xyz/s/10480727/fOgR0odQ/0Zv7nmQZ)
 ```
 - build                         | 打包文件
 - src	                        | 源码目录
@@ -46,7 +46,7 @@
 		"account": "940392A",
 		"bindWx": false,
 		"created_at": "2020-11-19T15:09:11.000Z",
-		"updated_at": "2020-11-19T15:09:11.000Z",
+		"updated_at": "2020-11-19T15:09:11.000Z"
 	}
 }
 
