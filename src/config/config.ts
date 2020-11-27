@@ -29,7 +29,9 @@ interface IActionType {
   [key: number]: string;
 }
 export const ActionMap: Map<number, string> = new Map<number, string>();
-
+const baicAttr = ["id", "nickname", "image"];
+export const friendsUserAttr = ["userName", ...baicAttr];
+export const friendsTeamAttr = ["name", ...baicAttr];
 const Op = Sequelize.Op;
 export const operatorsAliases = {
   $eq: Op.eq,

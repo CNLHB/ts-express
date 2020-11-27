@@ -7,9 +7,11 @@ import {validateCookieID} from "../../utils/middleware/validateCookieID";
 @controller
 class MessageController {
 
-    @get("/message/:fromId/:toId")
+    @get("/message/:toId")
+    @use(validateCookieID)
     async getMessageByFromIdAndToId(req: Request, res: Response) {
-        const fromId = parseInt(req.params.fromId)
+        let uid = req.session.login;
+        const fromId: number = parseInt(uid)
         const toId = parseInt(req.params.toId)
         let messages = await MessageService.getMessageByFromIdAndToId(fromId, toId)
         res.json(getResponseData(messages))

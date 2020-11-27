@@ -1,5 +1,7 @@
+import UserController from './UserController'
+new UserController()
 import "./FriendController";
-import "./UserController";
+// import "./UserController";
 import "./MessageController";
 import "./ChatController";
 import "./NotifyController";

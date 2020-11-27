@@ -1,9 +1,12 @@
 import Users from "../models/Users";
 import UserInfo from "../models/UserInfo";
-import { where } from "sequelize";
 
 export default class UserService {
   constructor() {}
+  /**
+   * 查询用户信息
+   * @param id
+   */
   static async queryUserById(id: number): Promise<Users> {
     const userInfo = await Users.findOne({
       attributes: {
@@ -23,6 +26,11 @@ export default class UserService {
     });
     return userInfo;
   }
+  /**
+   * 用户登录
+   * @param userName
+   * @param password
+   */
   static async login(userName: string, password: string): Promise<Users> {
     let user = await Users.findOne({
       where: {
@@ -35,32 +43,28 @@ export default class UserService {
     });
     return user;
   }
+  /**
+   * 用户注册
+   * @param userName
+   * @param password
+   */
   static async register(userName: string, password: string): Promise<Boolean> {
-    let [ret,flag] = await Users.findOrCreate({
-      where:{
-        userName
+    let [ret, flag] = await Users.findOrCreate({
+      where: {
+        userName,
       },
-      defaults:{
+      defaults: {
         userName,
         password,
-      }
-    })
-    if (flag){
+      },
+    });
+    if (flag) {
       UserInfo.create({
-        userId: ret.id
-      })
+        userId: ret.id,
+      });
       return flag;
-    }else{
+    } else {
       return flag;
     }
-    // let user = await Users.create({
-    //     userName,
-    //     password,
-    // });
-    // UserInfo.create({
-    //   userId:user.id
-    // })
-    // return user;
   }
-
 }

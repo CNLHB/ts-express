@@ -46,13 +46,12 @@ export default class NotifyService {
         uId,
         actionId: 9,
       };
-    }else if(type == "comment") {
-      // CommentService.queryProjectCommentListByUid()
+    } else if (type == "comment") {
       condition = {
         uId,
         actionId: 3,
       };
-    }else {
+    } else {
       condition = {
         uId,
       };
@@ -72,6 +71,7 @@ export default class NotifyService {
 
     return pageResult(page, pageSize, notifys.count, results);
   }
+
   static async createNotifys(
     where: any,
     page: number,
@@ -81,7 +81,6 @@ export default class NotifyService {
       rows: NotifyEvent[];
       count: number;
     } = await NotifyEvent.findAndCountAll({
-      // raw: true,
       where: where,
       attributes: {
         exclude: ["deleted_at"],
@@ -106,7 +105,7 @@ export default class NotifyService {
         where: {
           id: notify.objId,
         },
-        attributes: ["id","userName", "nickname"],
+        attributes: ["id", "userName", "nickname"],
       });
     } else if (objTypeMap[notify.objTypeId] == "project") {
       obj = await Project.findOne({
@@ -114,7 +113,7 @@ export default class NotifyService {
         where: {
           id: notify.objId,
         },
-        attributes: ["id","name", "nickname"],
+        attributes: ["id", "name", "nickname"],
       });
     } else if (objTypeMap[notify.objTypeId] == "team") {
       obj = await Team.findOne({
@@ -122,7 +121,7 @@ export default class NotifyService {
         where: {
           id: notify.objId,
         },
-        attributes: ["id","name", "nickname"],
+        attributes: ["id", "name", "nickname"],
       });
     } else if (objTypeMap[notify.objTypeId] == "system") {
       obj = {};
@@ -135,7 +134,7 @@ export default class NotifyService {
           where: {
             id: notify.effObjId,
           },
-          attributes: ["id","userName", "nickname"],
+          attributes: ["id", "userName", "nickname"],
         });
       } else if (objTypeMap[notify.effObjType] == "project") {
         effObj = await Project.findOne({
@@ -143,7 +142,7 @@ export default class NotifyService {
           where: {
             id: notify.effObjId,
           },
-          attributes: ["id","name", "nickname"],
+          attributes: ["id", "name", "nickname"],
         });
       } else if (objTypeMap[notify.effObjType] == "team") {
         effObj = await Team.findOne({
@@ -151,7 +150,7 @@ export default class NotifyService {
           where: {
             id: notify.effObjId,
           },
-          attributes: ["id","name", "nickname"],
+          attributes: ["id", "name", "nickname"],
         });
       } else if (objTypeMap[notify.effObjType] == "coupon") {
         effObj = await Coupon.findOne({
@@ -159,35 +158,41 @@ export default class NotifyService {
           where: {
             id: notify.effObjId,
           },
-          attributes: ["id","name", "nickname"],
+          attributes: ["id", "name", "nickname"],
         });
       }
     }
 
     ret.content = await this.createNotifyContent(action, obj, effObj);
     ret.status = statusMap[Number(notify.status)];
-    ret.type = notify_action_type[notify.actionId];
+    ret.type = notify_action_type[notify.actionId].split("_")[0];
     ret.created_at = notify.created_at;
     ret.updated_at = notify.updated_at;
 
     return ret;
   }
+  /**
+   * 根据模板创建通知内容
+   * @param actionType 
+   * @param obj 
+   * @param effectObj 
+   */
   static async createNotifyContent(
     actionType: string,
     obj: INotifyObj,
     effectObj?: INotifyObj
   ): Promise<string> {
-    let comment:any = {}
-    if (actionType == "comment"){
+    let comment: any = {};
+    if (actionType == "comment") {
       comment = await Comment.findOne({
-        where:{
+        where: {
           projectId: effectObj.id,
-          fromId:obj.id
-        }
-      })
-      console.log(comment)
+          fromId: obj.id,
+        },
+      });
+      console.log(comment);
     }
-    return notifyTemp(actionType, obj, effectObj,comment?comment:{});
+    return notifyTemp(actionType, obj, effectObj, comment ? comment : {});
   }
   //创建通知
   static async createNotifyByUId(uId: number): Promise<void> {

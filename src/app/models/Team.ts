@@ -9,7 +9,8 @@ export default class Team extends Model<Team> {
     autoIncrement: true,
   })
   id: number;
-
+  @Column({ field: "u_id" })
+  uId: number;
   @Column
   name: string;
   @Column

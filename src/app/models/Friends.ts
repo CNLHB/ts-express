@@ -1,6 +1,9 @@
 import { Table, Column, Model } from "sequelize-typescript";
+import Seqeuelize from "sequelize";
+import Users from "./Users";
+const Op = Seqeuelize.Op;
 @Table({
-  tableName: "t_friends",
+  tableName: "friends",
 })
 export default class Friends extends Model<Friends> {
   @Column({
@@ -14,9 +17,6 @@ export default class Friends extends Model<Friends> {
 
   @Column({ field: "to_id" })
   toId: number;
-  /**
-   * 关注类型 0用户   1 项目
-   */
   @Column
   type: number;
 

@@ -2,6 +2,7 @@ import Sequelize from "sequelize";
 import Friends from "../models/Friends";
 import Team from "../models/Team";
 import {pageResult,IPage} from "../../utils/utils";
+import { friendsTeamAttr } from "../../config/config";
 const Op = Sequelize.Op;
 export default class ChatService {
   constructor() {}
@@ -24,7 +25,7 @@ export default class ChatService {
         where: {
           id: { [Op.in]: ids },
         },
-        attributes: ["id", "name", "nickname", "image"],
+        attributes: friendsTeamAttr,
       });
       pageResult(page,pageSize,results.count, teams)
       return pageResult(page,pageSize,results.count, teams);

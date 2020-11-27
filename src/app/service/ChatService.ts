@@ -129,13 +129,13 @@ export default class ChatService {
             offset: (page - 1) * pageSize,
             limit: pageSize,
             attributes: {
-                exclude: ["deleted_at", "isRead"],
+                exclude: ["deleted_at", "isRead","status","belong","updated_at"],
             },
             include: [
                 {
                     model: Message,
                     attributes: {
-                        exclude: ["deleted_at"],
+                        exclude: ["updated_at","deleted_at"],
                     },
                 }
             ],

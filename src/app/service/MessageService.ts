@@ -41,18 +41,18 @@ export default class MessageService {
    */
   static async readMessage(ids: number[]): Promise<boolean> {
     try {
-      for (const  id of ids){
+      for (const id of ids) {
         let [count] = await Message.update(
-            { status: true },
-            {
-              where: {
-                id,
-              },
-            }
+          { status: true },
+          {
+            where: {
+              id,
+            },
+          }
         );
       }
-    }catch (e) {
-      console.log(e)
+    } catch (e) {
+      console.log(e);
       return false;
     }
     return true;
@@ -121,7 +121,6 @@ export default class MessageService {
     message: string
   ) {
     try {
-
       const chat: Chat = await Chat.findOne({
         raw: true,
         where: {

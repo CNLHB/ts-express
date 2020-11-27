@@ -39,12 +39,6 @@
 		"id": 1,
 		"userName": "aiwa",
 		"nickname": "aiwa",
-		"nameUpdateDate": "2020-11-19T09:58:04.000Z",
-		"phone": "15363398328",
-		"image": "http://192.168.160.72:520/static/images/aiwa-avatar.png",
-		"email": "1348844909@qq.com",
-		"account": "940392A",
-		"bindWx": false,
 		"created_at": "2020-11-19T15:09:11.000Z",
 		"updated_at": "2020-11-19T15:09:11.000Z"
 	}
