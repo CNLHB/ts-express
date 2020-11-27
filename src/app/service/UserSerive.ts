@@ -1,5 +1,5 @@
 import Users from "../models/Users";
-import UserInfo from "../models/UserInfo";
+import UserInfo from "./../models/UserInfo";
 
 export default class UserService {
   constructor() {}
@@ -65,6 +65,43 @@ export default class UserService {
       return flag;
     } else {
       return flag;
+    }
+  }
+  static async updateUserInfo(
+    uId: number,
+    skill:any,
+    adress: string,
+    website: string,
+    company: string,
+    occupation: string,
+    school: string,
+    education: string,
+    profile: string,
+    share: boolean
+  ): Promise<Boolean> {
+    let [count, flag] = await UserInfo.update(
+      {
+        skill: skill.join(","),
+        adress,
+        website,
+        company,
+        occupation,
+        school,
+        education,
+        profile,
+        share,
+      },
+      {
+        where: {
+          userId:uId
+        },
+      }
+    );
+    if (count==0) {
+
+      return false;
+    } else {
+      return true;
     }
   }
 }

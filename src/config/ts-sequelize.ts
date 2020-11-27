@@ -1,5 +1,4 @@
 import { Sequelize } from 'sequelize-typescript'
-import {operatorsAliases} from './config'
 import path from 'path'
 export const sequelize: Sequelize = new Sequelize(
     {
@@ -8,7 +7,6 @@ export const sequelize: Sequelize = new Sequelize(
         dialect: 'mysql',
         username: 'root',
         password: '123456',
-        operatorsAliases: operatorsAliases,
         define:{
             timestamps: true,
             paranoid: true,//假删除，
@@ -18,7 +16,6 @@ export const sequelize: Sequelize = new Sequelize(
         }
 }
 )
-    // 'mysql://root:123456@147.101.196.193:3306/ts_test') 
 sequelize.addModels([path.resolve(__dirname, `../app/models/`)]);
 
  (async function(){

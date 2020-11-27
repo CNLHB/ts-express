@@ -1,8 +1,14 @@
-import { Table, Column, Model, ForeignKey } from "sequelize-typescript";
+import {
+  Table,
+  Column,
+  Model,
+  ForeignKey,
+  AllowNull,
+} from "sequelize-typescript";
 import Users from "./Users";
 
 @Table({
-  tableName: "user_info",
+  tableName: "user_info"
 })
 export default class UserInfo extends Model<UserInfo> {
   @Column({
@@ -11,14 +17,12 @@ export default class UserInfo extends Model<UserInfo> {
   })
   id: number;
   @ForeignKey(() => Users)
+  @AllowNull
   @Column({ field: "u_id" })
   userId: number;
-  @Column({ field: "wx_code" })
-  wxCode: string;
-  //地址
+
   @Column
   adress: string;
-  //个人网站
   @Column
   website: string;
   //公司
@@ -27,7 +31,6 @@ export default class UserInfo extends Model<UserInfo> {
   //职业
   @Column
   occupation: string;
-  //学校
   @Column
   school: string;
   //学历
@@ -46,6 +49,9 @@ export default class UserInfo extends Model<UserInfo> {
   //简介
   @Column
   profile: string;
+  @Column
+  share: boolean;
 
-  isActive: number;
+
 }
+// attributes: { exclude: ['baz'] },

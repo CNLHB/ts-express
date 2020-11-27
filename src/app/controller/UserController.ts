@@ -1,4 +1,4 @@
-import { controller, get, post, use } from "../../utils/decorator";
+import { controller, get, post, use,put } from "../../utils/decorator";
 import { Request, Response } from "express";
 import { getResponseData, ResultCode } from "../../utils/utils";
 import UserService from "../service/UserSerive";
@@ -91,7 +91,19 @@ export default class UserController {
     if (user) {
       res.json(getResponseData("账号注册成功"));
     } else {
-      res.json(getResponseData("账号已存在，请重新注册"));
+      res.json(getResponseData('',"账号已存在，请重新注册",ResultCode.BAD_REQUEST_CODE));
+    }
+  }
+  @put("/user/info")
+  @use(validateCookieID)
+  async updateUser(req: BodyRequest, res: Response) {
+    const uid: string = req.session.login;
+    let { skill, adress,website,company,occupation,school,education,profile,share } = req.body;
+    let flag = await UserService.updateUserInfo(parseInt(uid),skill, adress,website,company,occupation,school,education,profile,Boolean(share) )
+    if(flag){
+      res.json(getResponseData("更新成功"));
+    } else{
+      res.json(getResponseData('',"更新失败",ResultCode.BAD_REQUEST_CODE));
     }
   }
 }

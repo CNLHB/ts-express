@@ -1,4 +1,4 @@
-import { Table, Column, Model, HasOne } from "sequelize-typescript";
+import { Table, Column, Model, HasOne,Length } from "sequelize-typescript";
 import UserInfo from "./UserInfo";
 
 @Table({
@@ -17,6 +17,7 @@ export default class Users extends Model<Users> {
   nickname: string;
   @Column({ field: "name_update_date" })
   nameUpdateDate: Date;
+  @Length({min: 11, max: 11})
   @Column
   phone: string;
   @Column
@@ -33,13 +34,4 @@ export default class Users extends Model<Users> {
   userInfo: UserInfo;
 
   isActive: number;
-  static async getList<T extends Users>() {
-    const results = await this.findAll({
-      raw: true,
-      attributes: {
-        exclude: ["password", "deleted_at"],
-      },
-    });
-    return results as T[];
-  }
 }

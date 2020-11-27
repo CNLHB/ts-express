@@ -9,7 +9,8 @@ export default class Project extends Model<Project> {
     autoIncrement: true,
   })
   id: number;
-
+  @Column({ field: "u_id" })
+  uId: number;
   @Column
   name: string;
   @Column
