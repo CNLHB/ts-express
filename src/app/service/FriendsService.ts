@@ -9,8 +9,8 @@ export default class FriendsService {
   //无操作0 ，关注 1 互相关注2
   static async getFriendList(
     fromId: number,
-    page: number = 1,
-    pageSize: number = 10
+    page: number,
+    pageSize: number
   ): Promise<IPage<Users>> {
     const results = await Friends.findAndCountAll({
       where: {
@@ -91,5 +91,34 @@ export default class FriendsService {
       }
     }
     return pageResult(page, pageSize, results.count, users);
+  }
+  static async activeFriendOrTeam(id:number,fromId:number,toId:number,type:number){
+      Friends.insertOrUpdate({
+
+      },{
+
+      })
+    let friend =await Friends.findOne({
+      where:{
+        fromId,toId,type
+      },
+      attributes:{
+        exclude: ["deleted_at"]
+      }
+    })
+    if (friend == null){
+        await  Friends.create({
+          fromId,toId,type
+        })
+      return "关注成功"
+    }else {
+      await  Friends.destroy({
+        where:{
+          fromId,toId,type
+        }
+      })
+      return "取消关注"
+    }
+
   }
 }

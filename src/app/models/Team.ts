@@ -17,4 +17,5 @@ export default class Team extends Model<Team> {
   image: string;
   @Column
   nickname: string;
+  isActive: number;
 }

@@ -9,6 +9,13 @@ import  './src/app/controller/index';
 
 const app = express()
 app.use(cors());
+// app.use(cors({
+//     origin:['http://localhost:8080'],//允许该域名下的请求
+//     methods:["GET","POST"],　　　　　　//　　允许接受的 请求类型
+//     alloweHeaders:['Content-Type','Authorization','Accept','Origin'],　　//请求头
+//     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+//     credentials: true, // 发送cookie
+// }));
 app.use('/static', express.static('public'));
 app.use(bodyParser.json());
 app.use(async function(err, req, res, next) {

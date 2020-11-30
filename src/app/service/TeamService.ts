@@ -27,6 +27,11 @@ export default class ChatService {
         },
         attributes: friendsTeamAttr,
       });
+      teams.forEach((item)=>{
+        item.isActive = 1;
+
+      })
+
       pageResult(page,pageSize,results.count, teams)
       return pageResult(page,pageSize,results.count, teams);
     } catch (err) {

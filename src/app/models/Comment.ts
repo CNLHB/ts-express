@@ -41,4 +41,7 @@ export default class Comment extends Model<Comment> {
   owner;
   @BelongsTo(() => Project)
   project
+
+  comments:string[]
+
 }

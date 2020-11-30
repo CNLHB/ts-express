@@ -27,4 +27,5 @@ export default class Message  extends Model<Message>{
     belong: number
     @Column({ field: "c_id" })
     cId: number
+
 }

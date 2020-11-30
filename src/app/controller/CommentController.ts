@@ -18,8 +18,8 @@ class CommentController {
     @use(validateCookieID)
     async queryProjectCommentListByUid(req: IPageBodyRequest, res: Response) {
         let uid = req.session.login;
-        const {page, pageSize} = req.query
-        let comments = await CommentService.queryProjectCommentListByUid(uid, parseInt(page),
+        const {type,page, pageSize} = req.query
+        let comments = await CommentService.queryProjectCommentListByUid(uid,type, parseInt(page),
             parseInt(pageSize));
         res.json(getResponseData(comments));
     }

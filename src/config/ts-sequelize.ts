@@ -8,7 +8,7 @@ export const sequelize: Sequelize = new Sequelize(
         username: 'root',
         password: '123456',
         define:{
-            timestamps: true,
+            timestamps: true,//时间戳
             paranoid: true,//假删除，
             underscored: true,//下划线
             charset: 'utf8',
@@ -20,6 +20,7 @@ sequelize.addModels([path.resolve(__dirname, `../app/models/`)]);
 
  (async function(){
      try {
+            //默认执行建表操作
             await sequelize.sync()
             
      } catch (error) {

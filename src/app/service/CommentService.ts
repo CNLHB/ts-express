@@ -4,6 +4,7 @@ import { IPage, pageResult } from "../../utils/utils";
 import Users from "../models/Users";
 import Project from "../models/Project";
 import { friendsUserAttr } from "./../../config/config";
+import {FilteredModelAttributes} from "sequelize-typescript/lib/models/Model";
 
 const Op = Sequelize.Op;
 export default class CommentService {
@@ -17,6 +18,7 @@ export default class CommentService {
    */
   static async queryProjectCommentListByUid(
     id: number,
+    type:string,
     page: number,
     pageSize: number
   ): Promise<IPage<Comment>> {
@@ -47,7 +49,27 @@ export default class CommentService {
       offset: (page - 1) * pageSize,
       limit: pageSize,
     });
+    if (type!=="me"){
+      return pageResult(page, pageSize, count, rows)
+    }
+    let map = new Map<number, FilteredModelAttributes<Comment>>()
+    rows.forEach((item)=>{
+      let  value = item.dataValues
 
-    return pageResult(page, pageSize, count, rows);
+      if (map.get(value.projectId)){
+        map.get((value.projectId)).comments.push(value.content)
+        map.get((value.projectId)).updatedAt = value.updatedAt
+        map.get((value.projectId)).createdAt = value.updatedAt
+      }else{
+        value.comments = [value.content]
+        map.set(value.projectId, value)
+      }
+    })
+    let arr = []
+    for (const value of map){
+      arr.push(value[1])
+      delete value[1].content
+    }
+    return pageResult(page, pageSize, count, arr);
   }
 }

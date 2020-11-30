@@ -1,4 +1,4 @@
-import { controller, get, use } from "../../utils/decorator";
+import {controller, get, post, use} from "../../utils/decorator";
 import { Request, Response } from "express";
 import {getResponseData, IPageBodyRequest, ResultCode, ResultErrorMsg} from "../../utils/utils";
 import FriendsService from "../service/FriendsService";
@@ -73,7 +73,7 @@ export default class FriendController {
    * @param const {type, page, pageSize }  = req.query
    * @param res
    */
-  @get("user/fans/:id")
+  @get("user/fans")
   @use(setPageOrPageSize)
   @use(validateCookieID)
   async getFansList(req: IPageBodyRequest, res: Response) {
@@ -91,6 +91,27 @@ export default class FriendController {
           ResultErrorMsg.ERROR_BAD_REQUEST,
           ResultCode.BAD_REQUEST_CODE
         )
+      );
+    }
+  }
+  @post("friend")
+  @use(validateCookieID)
+  async createFriend(req: Request, res: Response){
+    let uid = req.session.login;
+    let fromId = parseInt(req.body.fromId)
+    let toId = parseInt(req.body.toId)
+    let type = parseInt(req.body.type)
+    const id: number = parseInt(uid);
+    try {
+      let msg = await FriendsService.activeFriendOrTeam(id,fromId,toId,type)
+      res.json(getResponseData("",msg));
+    } catch (error) {
+      res.json(
+          getResponseData(
+              "",
+              ResultErrorMsg.ERROR_BAD_REQUEST,
+              ResultCode.BAD_REQUEST_CODE
+          )
       );
     }
   }
