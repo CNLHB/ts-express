@@ -1,4 +1,4 @@
-import { Table, Column, Model, HasOne,Length } from "sequelize-typescript";
+import {Table, Column, Model, HasOne, Length, AllowNull} from "sequelize-typescript";
 import UserInfo from "./UserInfo";
 
 @Table({
@@ -10,7 +10,7 @@ export default class Users extends Model<Users> {
     autoIncrement: true,
   })
   id: number;
-
+  @AllowNull(false)
   @Column({ field: "user_name" })
   userName: string;
   @Column
@@ -26,6 +26,7 @@ export default class Users extends Model<Users> {
   email: string;
   @Column
   account: string;
+  @AllowNull(false)
   @Column
   password: string;
   @Column({ field: "bind_wx" })

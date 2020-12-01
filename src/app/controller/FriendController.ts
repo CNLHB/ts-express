@@ -94,6 +94,12 @@ export default class FriendController {
       );
     }
   }
+
+  /**
+   * 取消/增加好友或团队
+   * @param req  {fromId toId  type} = req.body
+   * @param res
+   */
   @post("friend")
   @use(validateCookieID)
   async createFriend(req: Request, res: Response){
@@ -115,6 +121,12 @@ export default class FriendController {
       );
     }
   }
+
+  /**
+   * 搜索好友/团队
+   * @param {type, q, page, pageSize} = req.query
+   * @param res
+   */
   @get("friend/serach")
   @use(setPageOrPageSize)
   async serachFriendUserOrTeam(req: IPageBodyRequest, res: Response){

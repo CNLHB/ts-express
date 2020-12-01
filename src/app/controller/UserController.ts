@@ -87,12 +87,17 @@ export default class UserController {
   @post("/register")
   async register(req: BodyRequest, res: Response) {
     let { userName, password } = req.body;
-    let user = await UserService.register(userName, password);
-    if (user) {
-      res.json(getResponseData("账号注册成功"));
-    } else {
-      res.json(getResponseData('',"账号已存在，请重新注册",ResultCode.BAD_REQUEST_CODE));
+    try{
+      let user = await UserService.register(userName, password);
+      if (user) {
+        res.json(getResponseData("账号注册成功"));
+      } else {
+        res.json(getResponseData('',"账号已存在，请重新注册",ResultCode.BAD_REQUEST_CODE));
+      }
+    }catch (e) {
+      res.json(getResponseData('',"参数有误,请重新填写",ResultCode.ERROR_CODE));
     }
+
   }
   @put("/user/info")
   @use(validateCookieID)

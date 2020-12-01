@@ -3,6 +3,7 @@ const Op: Sequelize.Operators = Sequelize.Op;
 import Message from "../models/Message";
 import Chat from "../models/Chat";
 import Users from "../models/Users";
+import {friendsUserAttr} from "../../config/config";
 export enum MESSAGE_TYPE {
   UN_READ_TYPE = 0,
   ALL = 1,
@@ -95,7 +96,7 @@ export default class MessageService {
           },
           {
             model: Users,
-            attributes: ["id", "image", "nickname"],
+            attributes: friendsUserAttr,
           },
         ],
       });

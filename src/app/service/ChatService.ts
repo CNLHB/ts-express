@@ -1,8 +1,9 @@
 import Chat from "../models/Chat";
 import Sequelize from "sequelize";
 import Message from "../models/Message";
-import {IPage, pageResult} from "../../utils/utils";
+import {pageResult} from "../../utils/utils";
 import Users from "../models/Users";
+import {friendsUserAttr} from "../../config/config";
 
 const Op = Sequelize.Op;
 export default class ChatService {
@@ -151,7 +152,7 @@ export default class ChatService {
                 where: {
                     id: id
                 },
-                attributes: ["id", "userName", 'nickname', "image"],
+                attributes: friendsUserAttr,
             })
             item.dataValues.user = user
         }

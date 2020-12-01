@@ -5,7 +5,7 @@ import cors from  'cors';
 import router from  './src/utils/decorator';
 import  './src/config/ts-sequelize';
 import  './src/app/controller/index';
-
+import catchError from "./src/utils/middleware/exception";
 
 const app = express()
 // app.use(cors());
@@ -31,15 +31,7 @@ app.use((req, res, next) => {
 // }));
 app.use('/static', express.static('public'));
 app.use(bodyParser.json());
-app.use(async function(err, req, res, next) {
-    // logic
-    try{
-        await next()
-    }catch(err){
-        console.error(err)
-        res.json({})
-    }
-});
+app.use(catchError);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
     cookieSession({
@@ -48,6 +40,13 @@ app.use(
       maxAge: 24 * 60 * 60 * 1000
     })
   );
+app.use(async (req,res, next) => {
+    const start = +new Date()
+    await next()
+    const ms = +new Date() - start
+    console.log(`${req.method} ${req.url} - ${ms}ms`)
+})
+
 app.use('/api',router);
 
 app.listen(520, () => {
