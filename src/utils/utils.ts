@@ -25,7 +25,9 @@ export interface IPageBodyRequest extends Request{
       page:string,
       pageSize:string,
       type?:string,
-      read?:string
+      read?:string,
+      q?:string
+
     }
 
 }

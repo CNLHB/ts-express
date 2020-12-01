@@ -13,7 +13,8 @@ export const sequelize: Sequelize = new Sequelize(
             underscored: true,//下划线
             charset: 'utf8',
             freezeTableName: true//固定表名为单数  默认表名是xxxs
-        }
+        },
+        logging: false
 }
 )
 sequelize.addModels([path.resolve(__dirname, `../app/models/`)]);

@@ -2,7 +2,8 @@ import Friends from "../models/Friends";
 import Users from "../models/Users";
 import Sequelize from "sequelize";
 import { IPage, IPageCount, pageResult } from "../../utils/utils";
-import { friendsUserAttr } from './../../config/config';
+import { friendsUserAttr,friendsTeamAttr } from './../../config/config';
+import Team from "../models/Team";
 const Op = Sequelize.Op;
 export default class FriendsService {
   constructor() {}
@@ -121,4 +122,47 @@ export default class FriendsService {
     }
 
   }
+  static async serachFriendUserOrTeam(type: string, q: string,page:number=1,pageSize:number=10){
+    let ret:Users[]| Team[]
+    let num = 0
+    if (type=="user"){
+      let {count,
+        rows
+      } = await Users.findAndCountAll({
+          where: {
+          [Op.or]:[{
+            userName:{
+              [Op.like]: `%${q}%`
+            }
+          },{
+                email:{
+                  [Op.like]: `%${q}%`
+                }
+          }]
+          },
+        attributes:friendsUserAttr,
+        offset:(page-1)*pageSize,
+        limit:pageSize
+        })
+      num = count
+      ret = rows
+      }else {
+      let {count,
+        rows
+      } = await Team.findAndCountAll({
+        where: {
+          nickname:{
+            [Op.like]: `%${q}%`
+          }
+        },
+        attributes:friendsTeamAttr,
+        offset:(page-1)*pageSize,
+        limit:pageSize
+      })
+      num = count
+      ret = rows
+    }
+    return pageResult(page, pageSize, num, ret)
+  }
+
 }

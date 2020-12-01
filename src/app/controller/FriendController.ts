@@ -115,4 +115,26 @@ export default class FriendController {
       );
     }
   }
+  @get("friend/serach")
+  @use(setPageOrPageSize)
+  async serachFriendUserOrTeam(req: IPageBodyRequest, res: Response){
+    let type = req.query.type
+    let q = req.query.q
+    let page:number = parseInt(req.query.page);
+    let pageSize:number = parseInt(req.query.pageSize);
+    try {
+      let ret = await FriendsService.serachFriendUserOrTeam(type, q ,page,pageSize)
+      res.json(getResponseData(ret));
+    } catch (error) {
+      res.json(
+          getResponseData(
+              "",
+              ResultErrorMsg.ERROR_BAD_REQUEST,
+              ResultCode.BAD_REQUEST_CODE
+          )
+      );
+    }
+  }
+
+
 }
