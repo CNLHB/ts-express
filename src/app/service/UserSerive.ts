@@ -9,15 +9,16 @@ export default class UserService {
    */
   static async queryUserById(id: number): Promise<Users> {
     const userInfo = await Users.findOne({
+      where: {
+        id,
+      },
       attributes: {
         exclude: ["password", "deleted_at"],
       },
       include: [
         {
           model: UserInfo,
-          where: {
-            id,
-          },
+
           attributes: {
             exclude: ["deleted_at", "wx_code"],
           },
@@ -103,5 +104,20 @@ export default class UserService {
     } else {
       return true;
     }
+  }
+  static async updateUser(uId: number, obj:{phone:string,email:string,password:string} ){
+    for (let i in obj){
+      if (obj[i] == null){
+        delete obj[i]
+      }
+    }
+    console.log(obj)
+    let  [count, user]  = await Users.update(obj,{
+      where:{id:uId}
+    })
+    if (count==0){
+      return false
+    }
+    return true
   }
 }

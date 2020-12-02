@@ -1,6 +1,6 @@
 import { controller, get, post, use,put } from "../../utils/decorator";
 import { Request, Response } from "express";
-import {getResponseData, ResultCode, ResultErrorMsg} from "../../utils/utils";
+import {getResponseData, ResultCode, ResultErrorMsg, ResultSuccessMsg} from "../../utils/utils";
 import UserService from "../service/UserSerive";
 import { validateCookieID } from "../../utils/middleware/validateCookieID";
 interface BodyRequest extends Request {
@@ -90,7 +90,7 @@ export default class UserController {
     try{
       let user = await UserService.register(userName, password);
       if (user) {
-        res.json(getResponseData("账号注册成功"));
+        res.json(getResponseData(ResultSuccessMsg.REGISTER_SUCCESS));
       } else {
         res.json(getResponseData('',ResultErrorMsg.REGISTER_ERROR,ResultCode.BAD_REQUEST_CODE));
       }
@@ -101,7 +101,7 @@ export default class UserController {
   }
   @put("/user/info")
   @use(validateCookieID)
-  async updateUser(req: BodyRequest, res: Response) {
+  async updateUserInfo(req: BodyRequest, res: Response) {
     const uid: string = req.session.login;
     let { skill, address,website,company,occupation,school,education,profile,share } = req.body;
     let flag = await UserService.updateUserInfo(parseInt(uid),skill, address,website,company,occupation,school,education,profile,Boolean(share) )
@@ -109,6 +109,22 @@ export default class UserController {
       res.json(getResponseData("更新成功"));
     } else{
       res.json(getResponseData('',"更新失败",ResultCode.BAD_REQUEST_CODE));
+    }
+  }
+  @put("/user")
+  @use(validateCookieID)
+  async updateUser(req: BodyRequest, res: Response) {
+    const uid: string = req.session.login;
+    let { phone, email,password,nickname } = req.body;
+    try{
+      let flag = await UserService.updateUser(parseInt(uid), {phone, email, password})
+      if(flag){
+        res.json(getResponseData("更新成功"));
+      } else{
+        res.json(getResponseData('',"更新失败",ResultCode.BAD_REQUEST_CODE));
+      }
+    }catch (e) {
+      res.json(getResponseData('',ResultErrorMsg.PARAMETER_ERROR,ResultCode.BAD_REQUEST_CODE));
     }
   }
 }

@@ -3,7 +3,7 @@ import { Request } from "express";
  * 接口返回值状态码
  */
 export const enum ResultCode {
-  SUCESS_CODE = 0,
+  SUCCESS_CODE = 0,
   BAD_REQUEST_CODE = 10000,
   UNAUTHORIZED_CODE = 10001,
   FORBIDDEN_CODE = 10003,
@@ -54,8 +54,8 @@ export interface IPageCount<T> {
 }
 export const getResponseData = (
   data: any,
-  msg: string = "sucess",
-  code: number = ResultCode.SUCESS_CODE
+  msg: string = "success",
+  code: number = ResultCode.SUCCESS_CODE
 ): Result => {
   if (msg) {
     return {

@@ -22,7 +22,6 @@ export default class CommentService {
     page: number,
     pageSize: number
   ): Promise<IPage<Comment>> {
-    throw new Error("cuowu")
     const { rows, count } = await Comment.findAndCountAll({
       where: {
         toId: id,
