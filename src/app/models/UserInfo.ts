@@ -22,7 +22,7 @@ export default class UserInfo extends Model<UserInfo> {
   userId: number;
 
   @Column
-  adress: string;
+  address: string;
   @Column
   website: string;
   //公司

@@ -5,9 +5,6 @@ import FriendsService from "../service/FriendsService";
 import TeamService from "../service/TeamService";
 import { validateCookieID } from "../../utils/middleware/validateCookieID";
 import {setPageOrPageSize} from "../../utils/middleware/setPageOrPageSize";
-interface BodyRequest extends Request {
-  body: { [key: string]: string | undefined };
-}
 
 /**
  * 用户关注接口
@@ -18,6 +15,7 @@ export default class FriendController {
   /**
    * 获取关注的好友
    * @param const {type, page, pageSize }  = req.query
+   * @param req
    * @param res
    */
   @get("friend/user")
@@ -35,7 +33,7 @@ export default class FriendController {
       res.json(
         getResponseData(
           "",
-          ResultErrorMsg.ERROR_BAD_REQUEST,
+          ResultErrorMsg.BAD_REQUEST,
           ResultCode.BAD_REQUEST_CODE
         )
       );
@@ -44,6 +42,7 @@ export default class FriendController {
   /**
    * 获取关注的团队
    * @param const {type, page, pageSize }  = req.query
+   * @param req
    * @param res
    */
   @get("friend/team")
@@ -61,7 +60,7 @@ export default class FriendController {
       res.json(
         getResponseData(
           "",
-          ResultErrorMsg.ERROR_BAD_REQUEST,
+          ResultErrorMsg.BAD_REQUEST,
           ResultCode.BAD_REQUEST_CODE
         )
       );
@@ -71,6 +70,7 @@ export default class FriendController {
   /**
    * 获取用户的粉丝
    * @param const {type, page, pageSize }  = req.query
+   * @param req
    * @param res
    */
   @get("user/fans")
@@ -88,7 +88,7 @@ export default class FriendController {
       res.json(
         getResponseData(
           "",
-          ResultErrorMsg.ERROR_BAD_REQUEST,
+          ResultErrorMsg.BAD_REQUEST,
           ResultCode.BAD_REQUEST_CODE
         )
       );
@@ -115,7 +115,7 @@ export default class FriendController {
       res.json(
           getResponseData(
               "",
-              ResultErrorMsg.ERROR_BAD_REQUEST,
+              ResultErrorMsg.BAD_REQUEST,
               ResultCode.BAD_REQUEST_CODE
           )
       );
@@ -125,23 +125,24 @@ export default class FriendController {
   /**
    * 搜索好友/团队
    * @param {type, q, page, pageSize} = req.query
+   * @param req
    * @param res
    */
-  @get("friend/serach")
+  @get("friend/search")
   @use(setPageOrPageSize)
-  async serachFriendUserOrTeam(req: IPageBodyRequest, res: Response){
+  async searchFriendUserOrTeam(req: IPageBodyRequest, res: Response){
     let type = req.query.type
     let q = req.query.q
     let page:number = parseInt(req.query.page);
     let pageSize:number = parseInt(req.query.pageSize);
     try {
-      let ret = await FriendsService.serachFriendUserOrTeam(type, q ,page,pageSize)
+      let ret = await FriendsService.searchFriendUserOrTeam(type, q ,page,pageSize)
       res.json(getResponseData(ret));
     } catch (error) {
       res.json(
           getResponseData(
               "",
-              ResultErrorMsg.ERROR_BAD_REQUEST,
+              ResultErrorMsg.BAD_REQUEST,
               ResultCode.BAD_REQUEST_CODE
           )
       );

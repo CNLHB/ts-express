@@ -10,8 +10,19 @@ export const enum ResultCode {
   ERROR_CODE = 10004,
 }
 export const enum ResultErrorMsg {
-  ERROR_BAD_REQUEST = "request error",
+  BAD_REQUEST = "request error",
+  LOGIN_ERROR = "账号或密码错误",
+  REGISTER_ERROR = "账号已存在，请重新注册!",
+  PARAMETER_ERROR = "参数有误，请重新提交!",
+  READ_MESSAGE_ERROR = "消息读取错误!",
 }
+export const enum ResultSuccessMsg {
+  REGISTER_SUCCESS = "账号注册成功!",
+  READ_MESSAGE_SUCCESS = "消息读取成功!",
+  SEND_MESSAGE_SUCCESS = "消息发送成功!",
+
+}
+
 interface Result {
   code: number;
   msg: string;

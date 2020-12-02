@@ -1,6 +1,6 @@
 import { controller, get, post, use,put } from "../../utils/decorator";
 import { Request, Response } from "express";
-import { getResponseData, ResultCode } from "../../utils/utils";
+import {getResponseData, ResultCode, ResultErrorMsg} from "../../utils/utils";
 import UserService from "../service/UserSerive";
 import { validateCookieID } from "../../utils/middleware/validateCookieID";
 interface BodyRequest extends Request {
@@ -26,7 +26,7 @@ export default class UserController {
         res.json(getResponseData(error.message));
       }
     } catch (error) {
-      res.json(getResponseData("", "request error", ResultCode.ERROR_CODE));
+      res.json(getResponseData("", ResultErrorMsg.BAD_REQUEST, ResultCode.ERROR_CODE));
       console.log(error);
     }
   }
@@ -70,7 +70,7 @@ export default class UserController {
         res.json(getResponseData(user));
       } else {
         res.json(
-          getResponseData("", "账号或密码错误", ResultCode.UNAUTHORIZED_CODE)
+          getResponseData("", ResultErrorMsg.LOGIN_ERROR, ResultCode.UNAUTHORIZED_CODE)
         );
       }
     }
@@ -92,10 +92,10 @@ export default class UserController {
       if (user) {
         res.json(getResponseData("账号注册成功"));
       } else {
-        res.json(getResponseData('',"账号已存在，请重新注册",ResultCode.BAD_REQUEST_CODE));
+        res.json(getResponseData('',ResultErrorMsg.REGISTER_ERROR,ResultCode.BAD_REQUEST_CODE));
       }
     }catch (e) {
-      res.json(getResponseData('',"参数有误,请重新填写",ResultCode.ERROR_CODE));
+      res.json(getResponseData('',ResultErrorMsg.PARAMETER_ERROR,ResultCode.ERROR_CODE));
     }
 
   }
@@ -103,8 +103,8 @@ export default class UserController {
   @use(validateCookieID)
   async updateUser(req: BodyRequest, res: Response) {
     const uid: string = req.session.login;
-    let { skill, adress,website,company,occupation,school,education,profile,share } = req.body;
-    let flag = await UserService.updateUserInfo(parseInt(uid),skill, adress,website,company,occupation,school,education,profile,Boolean(share) )
+    let { skill, address,website,company,occupation,school,education,profile,share } = req.body;
+    let flag = await UserService.updateUserInfo(parseInt(uid),skill, address,website,company,occupation,school,education,profile,Boolean(share) )
     if(flag){
       res.json(getResponseData("更新成功"));
     } else{

@@ -1,6 +1,6 @@
 import {controller, get, use} from "../../utils/decorator";
 import {Response, Request} from "express";
-import {getResponseData, IPageBodyRequest, ResultCode} from "../../utils/utils";
+import {getResponseData, IPageBodyRequest} from "../../utils/utils";
 import NotifyService from "../service/NotifyService";
 import {validateCookieID} from "../../utils/middleware/validateCookieID";
 import {setPageOrPageSize} from "../../utils/middleware/setPageOrPageSize";

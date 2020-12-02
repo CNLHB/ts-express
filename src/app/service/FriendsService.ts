@@ -21,7 +21,6 @@ export default class FriendsService {
       offset: (page - 1) * pageSize,
       limit: pageSize,
     });
-
     const ids: number[] = results.rows.map((item: Friends) => {
       return item.toId;
     });
@@ -47,7 +46,6 @@ export default class FriendsService {
           item.isActive = 2;
         }
       }
-
       return pageResult(page, pageSize, results.count, users);
     } catch (err) {
       console.log(err);
@@ -122,7 +120,7 @@ export default class FriendsService {
     }
 
   }
-  static async serachFriendUserOrTeam(type: string, q: string,page:number=1,pageSize:number=10){
+  static async searchFriendUserOrTeam(type: string, q: string,page:number=1,pageSize:number=10){
     let ret:Users[]| Team[]
     let num = 0
     if (type=="user"){

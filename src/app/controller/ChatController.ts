@@ -29,7 +29,7 @@ class ChatController {
             res.json(
                 getResponseData(
                     "",
-                    ResultErrorMsg.ERROR_BAD_REQUEST,
+                    ResultErrorMsg.BAD_REQUEST,
                     ResultCode.BAD_REQUEST_CODE
                 )
             );
