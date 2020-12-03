@@ -1,6 +1,6 @@
-import {controller, get, use} from "../../utils/decorator";
+import {controller, del, get, use} from "../../utils/decorator";
 import {Response, Request} from "express";
-import {getResponseData, IPageBodyRequest} from "../../utils/utils";
+import {getResponseData, IPageBodyRequest, ResultCode} from "../../utils/utils";
 import NotifyService from "../service/NotifyService";
 import {validateCookieID} from "../../utils/middleware/validateCookieID";
 import {setPageOrPageSize} from "../../utils/middleware/setPageOrPageSize";
@@ -40,5 +40,15 @@ class ChatController {
         const {uid} = req.params;
         NotifyService.createNotifyByUId(parseInt(uid));
         res.json(getResponseData("notifys"));
+    }
+
+    @del("/notify/:id")
+    async delNotifyById(req: Request, res: Response) {
+        const {id} = req.params;
+        let ret =await NotifyService.delNotifyById(parseInt(id));
+        if (ret){
+            res.json(getResponseData("notifys delete success"));
+        }
+        res.json(getResponseData("notifys delete error","error", ResultCode.ERROR_CODE));
     }
 }

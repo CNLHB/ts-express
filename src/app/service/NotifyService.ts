@@ -1,4 +1,12 @@
-import {notify_action_type, statusMap, objTypeMap} from "../../config/config";
+import {
+    notify_action_type,
+    statusMap,
+    objTypeMap,
+    CoupAttr,
+    friendsTeamAttr,
+    projectAttr,
+    friendsUserAttr
+} from "../../config/config";
 import {notifyTemp, INotifyObj} from "../../config/Notifytemplate";
 import NotifyEvent from "../models/NotifyEvent";
 import Project from "../models/Project";
@@ -9,6 +17,7 @@ import {pageResult, IPage, IPageCount} from "../../utils/utils";
 import Comment from "../models/Comment";
 
 interface INotifyResult {
+    id?:number,
     status?: string;
     content?: string;
     updated_at?: Date;
@@ -19,7 +28,17 @@ interface INotifyResult {
 export default class NotifyService {
     constructor() {
     }
-
+    static async delNotifyById(id: number){
+        let ret = await NotifyEvent.destroy({
+            where:{
+                id
+            }
+        })
+        if (ret==0){
+            return false
+        }
+        return true
+    }
     // 获取通知
     static async getNotifyByUid(
         uId: number,
@@ -106,7 +125,7 @@ export default class NotifyService {
                 where: {
                     id: notify.objId,
                 },
-                attributes: ["id", "userName", "nickname"],
+                attributes: friendsUserAttr,
             });
         } else if (objTypeMap[notify.objTypeId] == "project") {
             obj = await Project.findOne({
@@ -114,7 +133,7 @@ export default class NotifyService {
                 where: {
                     id: notify.objId,
                 },
-                attributes: ["id", "name", "nickname"],
+                attributes: projectAttr,
             });
         } else if (objTypeMap[notify.objTypeId] == "team") {
             obj = await Team.findOne({
@@ -122,7 +141,7 @@ export default class NotifyService {
                 where: {
                     id: notify.objId,
                 },
-                attributes: ["id", "name", "nickname"],
+                attributes: friendsTeamAttr,
             });
         } else if (objTypeMap[notify.objTypeId] == "system") {
             obj = {};
@@ -135,7 +154,7 @@ export default class NotifyService {
                     where: {
                         id: notify.effObjId,
                     },
-                    attributes: ["id", "userName", "nickname"],
+                    attributes: friendsUserAttr,
                 });
             } else if (objTypeMap[notify.effObjType] == "project") {
                 effObj = await Project.findOne({
@@ -143,7 +162,7 @@ export default class NotifyService {
                     where: {
                         id: notify.effObjId,
                     },
-                    attributes: ["id", "name", "nickname"],
+                    attributes: projectAttr,
                 });
             } else if (objTypeMap[notify.effObjType] == "team") {
                 effObj = await Team.findOne({
@@ -151,7 +170,7 @@ export default class NotifyService {
                     where: {
                         id: notify.effObjId,
                     },
-                    attributes: ["id", "name", "nickname"],
+                    attributes: friendsTeamAttr,
                 });
             } else if (objTypeMap[notify.effObjType] == "coupon") {
                 effObj = await Coupon.findOne({
@@ -159,12 +178,13 @@ export default class NotifyService {
                     where: {
                         id: notify.effObjId,
                     },
-                    attributes: ["id", "name", "nickname"],
+                    attributes: CoupAttr,
                 });
             }
         }
 
         ret.content = await this.createNotifyContent(action, obj, effObj);
+        ret.id = notify.id
         ret.status = statusMap[Number(notify.status)];
         ret.type = notify_action_type[notify.actionId].split("_")[0];
         ret.created_at = notify.created_at;
@@ -192,7 +212,6 @@ export default class NotifyService {
                     fromId: obj.id,
                 },
             });
-            console.log(comment);
         }
         return notifyTemp(actionType, obj, effectObj, comment ? comment : {});
     }

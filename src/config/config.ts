@@ -31,3 +31,5 @@ export const ActionMap: Map<number, string> = new Map<number, string>();
 const baicAttr = ["id", "nickname", "image"];
 export const friendsUserAttr = ["userName", ...baicAttr];
 export const friendsTeamAttr = ["name", ...baicAttr];
+export const CoupAttr = ["name","id", "nickname"];
+export const projectAttr = ["name","id", "nickname","u_id"];
