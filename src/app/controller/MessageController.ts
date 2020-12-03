@@ -59,8 +59,6 @@ class MessageController {
     async readMessage(req: Request, res: Response) {
         let uid = req.session.login;
         const id: number[] = req.body.id
-        console.log(uid)
-        console.log(id)
         if (uid) {
             let ret = await MessageService.readMessage(id)
             if (ret) {

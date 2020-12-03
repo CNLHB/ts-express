@@ -117,7 +117,7 @@ export default class UserController {
     const uid: string = req.session.login;
     let { phone, email,password,nickname } = req.body;
     try{
-      let flag = await UserService.updateUser(parseInt(uid), {phone, email, password})
+      let flag = await UserService.updateUser(parseInt(uid), {phone, email, password,nickname})
       if(flag){
         res.json(getResponseData("更新成功"));
       } else{

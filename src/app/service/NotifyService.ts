@@ -15,7 +15,8 @@ import Team from "../models/Team";
 import Coupon from "../models/Coupon";
 import {pageResult, IPage, IPageCount} from "../../utils/utils";
 import Comment from "../models/Comment";
-
+import Sequelize from "sequelize";
+const Op = Sequelize.Op
 interface INotifyResult {
     id?:number,
     status?: string;
@@ -35,6 +36,19 @@ export default class NotifyService {
             }
         })
         if (ret==0){
+            return false
+        }
+        return true
+    }
+    static async readNotifyByIds(ids: number[]){
+        let [count, res] = await NotifyEvent.update({
+           status: true
+        },{
+            where: {
+                id: { [Op.in]: ids },
+            },
+        })
+        if (count == 0){
             return false
         }
         return true

@@ -105,7 +105,7 @@ export default class UserService {
       return true;
     }
   }
-  static async updateUser(uId: number, obj:{phone:string,email:string,password:string} ){
+  static async updateUser(uId: number, obj:{phone:string,email:string,password:string,nicknam:string} ){
     for (let i in obj){
       if (obj[i] == null){
         delete obj[i]

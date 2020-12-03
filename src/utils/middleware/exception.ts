@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction} from "express";
 
 const catchError = async (err,req: Request, res: Response, next: NextFunction) => {
-    console.log("++++++++++++++++++")
+    console.log("catchError++++++++++++++++++++++++++++")
     try {
         await next()
     } catch (error) {
